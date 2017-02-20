@@ -1,5 +1,5 @@
 {
-  "name": "ee.ttu.idk0071.reputability.webapp",
+  "name": "ee.ttu.idk0071.sentiment.webapp",
   "type": "project:application",
   "platform": {
     "id": "web",
