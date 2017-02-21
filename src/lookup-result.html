@@ -1,0 +1,40 @@
+<template>
+	<h3>${lookupData.business.name} <small>${lookupData.business.country}</small></h3>
+
+	<div class="snapshot-report">
+			<div class="row">
+				<div class="col-md-6">
+					<h4>Lookup</h4>
+					<dl class="dl-horizontal">
+						<dt>Average sentiment</dt>
+						<dd>${lookupData.averageSentiment}</dd>
+						<dt>Snapshot count</dt>
+						<dd>${lookupData.snapshotCount}</dd>
+					</dl>
+					<img class="sentiment-icon" src.bind="'images/' + lookupData.averageSentiment + '.png'" />
+				</div>
+				<div class="col-md-6">
+					<h4>Snapshots</h4>
+					<dl repeat.for="snapshot of snapshots" class="dl-horizontal">
+						<dt>Rank/relevance</dt>
+						<dd>${snapshot.rank}</dd>
+						<dt>Title</dt>
+						<dd>${snapshot.title}</dd>
+						<dt>Domain</dt>
+						<dd>${snapshot.lookupDomain}</dd>
+						<dt>URL</dt>
+						<dd><a href="${snapshot.url}" target="_blank">${snapshot.url}</a></dd>
+						<dt>Sentiment</dt>
+						<dd>${snapshot.sentiment}</dd>
+					</dl>
+					<ul class="pagination">
+						<li><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+					</ul>
+				</div>
+			</div>
+	</div>
+</template>
