@@ -19,7 +19,7 @@ export class LookupForm {
 	created() {
 		this.api.getBusinessTypes().then(types => {
 				this.bussinessTypes = types.map(x => {
-					return { name: x.name, value: x.code };
+					return { name: x.name, value: x.id };
 				});
 			});
 
@@ -34,18 +34,18 @@ export class LookupForm {
 		return this.typeId
 			&& this.countryId
 			&& !isEmpty(this.businessName)
-			&& !this.api.isRequesting;
+			&& !this.api.isRequesting();
 	}
 
   performLookup() {
     this.ea.publish(new LookupStarted());
 
     this.api.performLookup({
-		  countryId: this.countryId,
-      typeId: this.typeId,
-      name: this.businessName
+      countryCode: this.countryId,
+      businessTypeId: this.typeId,
+      businessName: this.businessName
     }).then(lookupResult => {
-      this.router.navigate("lookups/" + lookupResult.lookupId);
+      this.router.navigate("lookups/" + lookupResult.id);
     });
 	}
 }

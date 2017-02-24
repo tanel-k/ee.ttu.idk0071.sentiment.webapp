@@ -94,7 +94,7 @@ define('lookup-form',['exports', './web-api', './utils', 'aurelia-router', 'aure
 
 			this.api.getBusinessTypes().then(function (types) {
 				_this.bussinessTypes = types.map(function (x) {
-					return { name: x.name, value: x.code };
+					return { name: x.name, value: x.id };
 				});
 			});
 
@@ -111,18 +111,18 @@ define('lookup-form',['exports', './web-api', './utils', 'aurelia-router', 'aure
 			this.ea.publish(new _messages.LookupStarted());
 
 			this.api.performLookup({
-				countryId: this.countryId,
-				typeId: this.typeId,
-				name: this.businessName
+				countryCode: this.countryId,
+				businessTypeId: this.typeId,
+				businessName: this.businessName
 			}).then(function (lookupResult) {
-				_this2.router.navigate("lookups/" + lookupResult.lookupId);
+				_this2.router.navigate("lookups/" + lookupResult.id);
 			});
 		};
 
 		_createClass(LookupForm, [{
 			key: 'canLookup',
 			get: function get() {
-				return this.typeId && this.countryId && !(0, _utils.isEmpty)(this.businessName) && !this.api.isRequesting;
+				return this.typeId && this.countryId && !(0, _utils.isEmpty)(this.businessName) && !this.api.isRequesting();
 			}
 		}]);
 
@@ -164,7 +164,7 @@ define('lookup-result',['exports', 'aurelia-event-aggregator', './messages', './
       });
 
       return this.api.getLookupSnapshots(params.lookupId).then(function (snapshotsResult) {
-        _this.snapshots = snapshotsResult.snapshots;
+        _this.snapshots = snapshotsResult;
       });
     };
 
@@ -256,12 +256,13 @@ define('utils',["exports"], function (exports) {
     return !val || !val.trim();
   }
 });
-define('web-api',["exports"], function (exports) {
-  "use strict";
+define('web-api',['exports', 'aurelia-fetch-client'], function (exports, _aureliaFetchClient) {
+  'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
+  exports.WebAPI = undefined;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -269,162 +270,50 @@ define('web-api',["exports"], function (exports) {
     }
   }
 
-  var latency = 500;
-  var longLatency = 1000;
-
-  var businessTypes = [{
-    code: 1,
-    name: "Transport"
-  }, {
-    code: 2,
-    name: "E-commerce"
-  }, {
-    code: 3,
-    name: "Banking"
-  }];
-
-  var countries = [{
-    code: "UK",
-    name: "United Kingdom"
-  }, {
-    code: "AUS",
-    name: "Australia"
-  }];
-
-  var lookupResponse = {
-    lookupId: 1
-  };
-
-  var lookupData = {
-    business: {
-      type: "Transport",
-      country: "United Kingdom",
-      name: "Dummy test"
-    },
-    averageSentiment: "Neutral",
-    snapshotCount: 5
-  };
-
-  var lookupSnapshots = {
-    snapshots: [{
-      url: "http://bizreviews.com/32352",
-      title: "Dummy Review 1",
-      rank: 1,
-      lookupDomain: "Google",
-      time: "2012-04-23T18:25:43.511Z",
-      sentiment: "Neutral",
-      trustLevel: 0.067
-    }, {
-      url: "http://xreviews.com/31152",
-      title: "Dummy Review 2",
-      rank: 2,
-      lookupDomain: "Google",
-      time: "2012-04-23T18:25:43.511Z",
-      sentiment: "Neutral",
-      trustLevel: 0.017
-    }, {
-      url: "http://xreviews.com/31152",
-      title: "Dummy Review 3",
-      rank: 3,
-      lookupDomain: "Google",
-      time: "2012-04-23T18:25:43.511Z",
-      sentiment: "Positive",
-      trustLevel: 0.017
-    }, {
-      url: "http://xreviews.com/31152",
-      title: "Dummy Review 4",
-      rank: 4,
-      lookupDomain: "Google",
-      time: "2012-04-23T18:25:43.511Z",
-      sentiment: "Negative",
-      trustLevel: 0.017
-    }, {
-      url: "http://xreviews.com/31152",
-      title: "Dummy Review 5",
-      rank: 5,
-      lookupDomain: "Google",
-      time: "2012-04-23T18:25:43.511Z",
-      sentiment: "Positive",
-      trustLevel: 0.017
-    }]
-  };
-
   var WebAPI = exports.WebAPI = function () {
     function WebAPI() {
       _classCallCheck(this, WebAPI);
 
-      this.isRequesting = false;
+      this.httpClient = new _aureliaFetchClient.HttpClient();
     }
 
-    WebAPI.prototype.getBusinessEntities = function getBusinessEntities() {
-      var _this = this;
-
-      this.isRequesting = true;
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve(businessEntities);
-          _this.isRequesting = false;
-        }, latency);
-      });
+    WebAPI.prototype.isRequesting = function isRequesting() {
+      return this.httpClient.isRequesting;
     };
 
     WebAPI.prototype.getCountries = function getCountries() {
-      var _this2 = this;
-
-      this.isRequesting = true;
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve(countries);
-          _this2.isRequesting = false;
-        }, latency);
+      return this.httpClient.fetch('http://localhost:8080/classifiers/countries').then(function (response) {
+        return response.json();
       });
     };
 
     WebAPI.prototype.getBusinessTypes = function getBusinessTypes() {
-      var _this3 = this;
-
-      this.isRequesting = true;
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve(businessTypes);
-          _this3.isRequesting = false;
-        }, latency);
+      return this.httpClient.fetch('http://localhost:8080/classifiers/business-types').then(function (response) {
+        return response.json();
       });
     };
 
     WebAPI.prototype.getLookupSnapshots = function getLookupSnapshots(lookupId) {
-      var _this4 = this;
-
-      this.isRequesting = true;
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve(lookupSnapshots);
-          _this4.isRequesting = false;
-        }, latency);
+      return this.httpClient.fetch('http://localhost:8080/lookups/' + lookupId + '/snapshots').then(function (response) {
+        return response.json();
       });
     };
 
     WebAPI.prototype.getLookupData = function getLookupData(lookupId) {
-      var _this5 = this;
-
-      this.isRequesting = true;
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve(lookupData);
-          _this5.isRequesting = false;
-        }, latency);
+      return this.httpClient.fetch('http://localhost:8080/lookups/' + lookupId).then(function (response) {
+        return response.json();
       });
     };
 
     WebAPI.prototype.performLookup = function performLookup(business) {
-      var _this6 = this;
-
-      this.isRequesting = true;
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve(lookupResponse);
-          _this6.isRequesting = false;
-        }, longLatency);
+      return this.httpClient.fetch('http://localhost:8080/lookups', {
+        method: 'POST',
+        body: JSON.stringify(business),
+        headers: {
+          'Content-type': 'application/json'
+        }
+      }).then(function (response) {
+        return response.json();
       });
     };
 
@@ -491,10 +380,9 @@ define('resources/elements/loading-indicator',['exports', 'nprogress', 'aurelia-
 		return _class;
 	}());
 });
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><require from=\"./lookup-form\"></require><require from=\"./lookup-result\"></require><nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\"><div class=\"navbar-header\"><a class=\"navbar-brand\" href=\"#\"><i class=\"fa fa-user\"></i> <span>Sentimental.ly</span></a></div></nav><loading-indicator loading.bind=\"router.isNavigating || api.isRequesting\"></loading-indicator><div class=\"container\"><div class=\"row\"><lookup-form class=\"col-md-4\"></lookup-form><router-view class=\"col-md-8\"></router-view></div></div></template>"; });
-define('text!styles.css', ['module'], function(module) { module.exports = "body { padding-top: 70px; }\n\nsection {\n  margin: 0 20px;\n}\n\n.navbar-nav li.loader {\n    margin: 12px 24px 0 6px;\n}\n\n.panel {\n  margin: 20px;\n}\n\n.button-bar {\n  right: 0;\n  left: 0;\n  bottom: 0;\n  border-top: 1px solid #ddd;\n  background: white;\n}\n\n.button-bar > button {\n  float: right;\n  margin: 20px;\n}\n\n.form-group.required .control-label:after {\n  content:\"*\";\n  color:red;\n}\n\n.sentiment-icon {\n  width: 50px;\n  height: 50px;\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\n"; });
-define('text!lookup-form.html', ['module'], function(module) { module.exports = "<template><form><fieldset class=\"form-group\"><legend>Business Sentiment Lookup</legend><div class=\"form-group required\"><label class=\"control-label\">Business Type</label><select value.bind=\"typeId\" class=\"form-control\"><option></option><option repeat.for=\"option of bussinessTypes\" model.bind=\"option\">${option.name}</option></select></div><div class=\"form-group required\"><label class=\"control-label\">Country</label><select value.bind=\"countryId\" class=\"form-control\"><option></option><option repeat.for=\"option of countries\" model.bind=\"option\">${option.name}</option></select></div><div class=\"form-group required\"><label class=\"control-label\">Business Name</label><input value.bind=\"businessName\" class=\"form-control\"></div></fieldset><button click.trigger=\"performLookup()\" class=\"btn btn-primary\" disabled.bind=\"!canLookup\">Perform lookup</button></form></template>"; });
-define('text!lookup-result.html', ['module'], function(module) { module.exports = "<template><h3>${lookupData.business.name} <small>${lookupData.business.country}</small></h3><div class=\"snapshot-report\"><div class=\"row\"><div class=\"col-md-6\"><h4>Lookup</h4><dl class=\"dl-horizontal\"><dt>Average sentiment</dt><dd>${lookupData.averageSentiment}</dd><dt>Snapshot count</dt><dd>${lookupData.snapshotCount}</dd></dl><img class=\"sentiment-icon\" src.bind=\"'images/' + lookupData.averageSentiment + '.png'\"></div><div class=\"col-md-6\"><h4>Snapshots</h4><dl repeat.for=\"snapshot of snapshots\" class=\"dl-horizontal\"><dt>Rank/relevance</dt><dd>${snapshot.rank}</dd><dt>Title</dt><dd>${snapshot.title}</dd><dt>Domain</dt><dd>${snapshot.lookupDomain}</dd><dt>URL</dt><dd><a href=\"${snapshot.url}\" target=\"_blank\">${snapshot.url}</a></dd><dt>Sentiment</dt><dd>${snapshot.sentiment}</dd></dl><ul class=\"pagination\"><li><a href=\"#\">1</a></li><li><a href=\"#\">2</a></li><li><a href=\"#\">3</a></li><li><a href=\"#\">4</a></li><li><a href=\"#\">5</a></li></ul></div></div></div></template>"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><require from=\"./lookup-form\"></require><require from=\"./lookup-result\"></require><nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\"><div class=\"navbar-header\"><a class=\"navbar-brand\" href=\"#\"><i class=\"fa fa-user\"></i> <span>Sentimental.ly</span></a></div></nav><loading-indicator loading.bind=\"router.isNavigating || api.isRequesting()\"></loading-indicator><div class=\"container\"><div class=\"row\"><lookup-form class=\"col-md-4\"></lookup-form><router-view class=\"col-md-8\"></router-view></div></div></template>"; });
+define('text!styles.css', ['module'], function(module) { module.exports = "body { padding-top: 70px; }\r\n\r\nsection {\r\n  margin: 0 20px;\r\n}\r\n\r\n.navbar-nav li.loader {\r\n    margin: 12px 24px 0 6px;\r\n}\r\n\r\n.panel {\r\n  margin: 20px;\r\n}\r\n\r\n.button-bar {\r\n  right: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  border-top: 1px solid #ddd;\r\n  background: white;\r\n}\r\n\r\n.button-bar > button {\r\n  float: right;\r\n  margin: 20px;\r\n}\r\n\r\n.form-group.required .control-label:after {\r\n  content:\"*\";\r\n  color:red;\r\n}\r\n\r\n.sentiment-icon {\r\n  width: 50px;\r\n  height: 50px;\r\n  display: block;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n"; });
+define('text!lookup-form.html', ['module'], function(module) { module.exports = "<template><form><fieldset class=\"form-group\"><legend>Business Sentiment Lookup</legend><div class=\"form-group required\"><label class=\"control-label\">Business Type</label><select value.bind=\"typeId\" class=\"form-control\"><option></option><option repeat.for=\"option of bussinessTypes\" model.bind=\"option.value\">${option.name}</option></select></div><div class=\"form-group required\"><label class=\"control-label\">Country</label><select value.bind=\"countryId\" class=\"form-control\"><option></option><option repeat.for=\"option of countries\" model.bind=\"option.value\">${option.name}</option></select></div><div class=\"form-group required\"><label class=\"control-label\">Business Name</label><input value.bind=\"businessName\" class=\"form-control\"></div></fieldset><button click.trigger=\"performLookup()\" class=\"btn btn-primary\" disabled.bind=\"!canLookup\">Perform lookup</button></form></template>"; });
+define('text!lookup-result.html', ['module'], function(module) { module.exports = "<template><h3>${lookupData.business.businessName} <small>${lookupData.business.country.name}</small></h3><div class=\"snapshot-report\"><div class=\"row\"><div class=\"col-md-6\"><h4>Lookup</h4><dl class=\"dl-horizontal\"><dt>Average sentiment</dt><dd>${lookupData.sentimentType.name}</dd><dt>Snapshot count</dt><dd>${lookupData.snapshotCount}</dd></dl><img class=\"sentiment-icon\" src.bind=\"'images/' + lookupData.sentimentType.name + '.png'\"></div><div class=\"col-md-6\"><h4>Snapshots</h4><dl repeat.for=\"snapshot of snapshots\" class=\"dl-horizontal\"><dt>Rank/relevance</dt><dd>${snapshot.rank}</dd><dt>Title</dt><dd>${snapshot.title}</dd><dt>Domain</dt><dd>${snapshot.lookupDomain}</dd><dt>URL</dt><dd><a href=\"${snapshot.url}\" target=\"_blank\">${snapshot.url}</a></dd><dt>Sentiment</dt><dd>${snapshot.sentimentType.name}</dd></dl><ul class=\"pagination\"><li><a href=\"#\">1</a></li><li><a href=\"#\">2</a></li><li><a href=\"#\">3</a></li><li><a href=\"#\">4</a></li><li><a href=\"#\">5</a></li></ul></div></div></div></template>"; });
 define('text!no-lookup.html', ['module'], function(module) { module.exports = "<template><div class=\"no-selection text-center\"><h2>${message}</h2></div></template>"; });
-define('text!resources/no-results.html', ['module'], function(module) { module.exports = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>$Title$</title></head><body>$END$</body></html>"; });
 //# sourceMappingURL=app-bundle.js.map
