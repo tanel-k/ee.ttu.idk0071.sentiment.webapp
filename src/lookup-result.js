@@ -22,7 +22,7 @@ export class LookupResult {
     });
 
     return this.api.getLookupSnapshots(params.lookupId).then(snapshotsResult => {
-      this.snapshots = snapshotsResult.snapshots;
+      this.snapshots = snapshotsResult;
     });
   }
 }
