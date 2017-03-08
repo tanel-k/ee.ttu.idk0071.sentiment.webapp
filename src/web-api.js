@@ -5,13 +5,14 @@
  */
 import {inject} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
+import environment from './environment';
 
 @inject(HttpClient)
 export class WebAPI {
 	constructor(httpClient) {
 		this.httpClient = httpClient.configure(config => config
 					.useStandardConfiguration()
-					.withBaseUrl('http://localhost:8080/')
+					.withBaseUrl(environment.gatewayURL)
 				);
 	}
 

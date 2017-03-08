@@ -39,16 +39,17 @@ define('app',['exports', 'aurelia-framework', './web-api'], function (exports, _
 		return App;
 	}()) || _class);
 });
-define('environment',["exports"], function (exports) {
-  "use strict";
+define('environment',['exports'], function (exports) {
+	'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = {
-    debug: true,
-    testing: true
-  };
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = {
+		debug: true,
+		testing: true,
+		gatewayURL: 'http://localhost:8080/'
+	};
 });
 define('lookup-form',['exports', 'aurelia-framework', './web-api', './utils', 'aurelia-router', 'aurelia-event-aggregator', './messages', 'blockUI', 'jquery'], function (exports, _aureliaFramework, _webApi, _utils, _aureliaRouter, _aureliaEventAggregator, _messages, _blockUI) {
 	'use strict';
@@ -281,13 +282,21 @@ define('utils',["exports"], function (exports) {
     return !val || !val.trim();
   }
 });
-define('web-api',['exports', 'aurelia-framework', 'aurelia-fetch-client'], function (exports, _aureliaFramework, _aureliaFetchClient) {
+define('web-api',['exports', 'aurelia-framework', 'aurelia-fetch-client', './environment'], function (exports, _aureliaFramework, _aureliaFetchClient, _environment) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
 	exports.WebAPI = undefined;
+
+	var _environment2 = _interopRequireDefault(_environment);
+
+	function _interopRequireDefault(obj) {
+		return obj && obj.__esModule ? obj : {
+			default: obj
+		};
+	}
 
 	function _classCallCheck(instance, Constructor) {
 		if (!(instance instanceof Constructor)) {
@@ -302,7 +311,7 @@ define('web-api',['exports', 'aurelia-framework', 'aurelia-fetch-client'], funct
 			_classCallCheck(this, WebAPI);
 
 			this.httpClient = httpClient.configure(function (config) {
-				return config.useStandardConfiguration().withBaseUrl('http://localhost:8080/');
+				return config.useStandardConfiguration().withBaseUrl(_environment2.default.gatewayURL);
 			});
 		}
 
