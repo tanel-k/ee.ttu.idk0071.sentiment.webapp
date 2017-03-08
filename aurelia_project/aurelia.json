@@ -91,7 +91,7 @@
 				"name": "vendor-bundle.js",
 				"prepend": [
 					"node_modules/bluebird/js/browser/bluebird.core.js",
-          "node_modules/whatwg-fetch/fetch.js",
+					"node_modules/whatwg-fetch/fetch.js",
 					"node_modules/requirejs/require.js"
 				],
 				"dependencies": [
@@ -99,7 +99,7 @@
 					"aurelia-bootstrapper",
 					"aurelia-dependency-injection",
 					"aurelia-event-aggregator",
-          "aurelia-fetch-client",
+					"aurelia-fetch-client",
 					"aurelia-framework",
 					"aurelia-history",
 					"aurelia-history-browser",
@@ -136,14 +136,29 @@
 					},
 					"jquery",
 					{
-					"name": "bootstrap",
-					"path": "../node_modules/bootstrap/dist",
-					"main": "js/bootstrap.min",
-					"deps": ["jquery"],
-					"exports": "$",
-					"resources": [
-						"css/bootstrap.css"
-					]
+						"name": "select2",
+						"path": "../node_modules/select2/dist",
+						"main": "js/select2",
+						"deps": ["jquery"],
+						"resources": [
+							"css/select2.css"
+						]
+					},
+					{
+						"name": "blockUI",
+						"path": "../node_modules/block-ui",
+						"main": "jquery.blockUI.js",
+						"deps": ["jquery"]
+					},
+					{
+						"name": "bootstrap",
+						"path": "../node_modules/bootstrap/dist",
+						"main": "js/bootstrap.min",
+						"deps": ["jquery"],
+						"exports": "$",
+						"resources": [
+							"css/bootstrap.css"
+						]
 					},
 					{
 						"name": "nprogress",

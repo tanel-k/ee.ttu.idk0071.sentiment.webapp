@@ -6,10 +6,10 @@
 				<div class="col-md-6">
 					<h4>Lookup</h4>
 					<dl class="dl-horizontal">
-						<dt>Average sentiment</dt>
+						<dt>Sentiment estimate</dt>
 						<dd>${lookupData.sentimentType.name}</dd>
-						<dt>Snapshot count</dt>
-						<dd>${lookupData.snapshotCount}</dd>
+						<!--<dt>Snapshot count</dt>
+						<dd>${lookupData.snapshotCount}</dd>-->
 					</dl>
 					<img class="sentiment-icon" src.bind="'images/' + lookupData.sentimentType.name + '.png'" />
 				</div>
@@ -21,12 +21,15 @@
 						<dt>Title</dt>
 						<dd>${snapshot.title}</dd>
 						<dt>Domain</dt>
-						<dd>${snapshot.lookupDomain}</dd>
+						<dd>${snapshot.sentimentLookupDomain.name}</dd>
 						<dt>URL</dt>
 						<dd><a href="${snapshot.url}" target="_blank">${snapshot.url}</a></dd>
 						<dt>Sentiment</dt>
 						<dd>${snapshot.sentimentType.name}</dd>
+						<dt>Trustlevel</dt>
+						<dd>${snapshot.trustLevel}</dd>
 					</dl>
+					<!--
 					<ul class="pagination">
 						<li><a href="#">1</a></li>
 						<li><a href="#">2</a></li>
@@ -34,6 +37,7 @@
 						<li><a href="#">4</a></li>
 						<li><a href="#">5</a></li>
 					</ul>
+					-->
 				</div>
 			</div>
 	</div>
