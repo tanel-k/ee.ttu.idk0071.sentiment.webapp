@@ -4,6 +4,10 @@ section {
   margin: 0 20px;
 }
 
+.blockOverlay {
+	z-index: 2000 !important;
+}
+
 .navbar-nav li.loader {
     margin: 12px 24px 0 6px;
 }

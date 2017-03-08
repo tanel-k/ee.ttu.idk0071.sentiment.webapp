@@ -4,17 +4,11 @@
 			<legend>Business Sentiment Lookup</legend>
 			<div class="form-group required">
 				<label class="control-label">Business Type</label>
-				<select value.bind="typeId" class="form-control">
-					<option></option>
-          <option repeat.for="option of bussinessTypes" model.bind="option.value">${option.name}</option>
-				</select>
+				<enhanced-select guid="business-type-select" value.bind="typeId" values.bind="types"></enhanced-select>
 			</div>
 			<div class="form-group required">
 				<label class="control-label">Country</label>
-				<select value.bind="countryId" class="form-control">
-					<option></option>
-          <option repeat.for="option of countries" model.bind="option.value">${option.name}</option>
-				</select>
+				<enhanced-select guid="country-select" value.bind="countryId" values.bind="countries"></enhanced-select>
 			</div>
 			<div class="form-group required">
 				<label class="control-label">Business Name</label>
