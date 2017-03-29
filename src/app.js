@@ -1,33 +1,19 @@
-/**
- * Created by Tanel.Prikk on 2/21/2017.
- * 
- * 07/03/2017	IDKPR-44: use injection
- */
-import {inject} from 'aurelia-framework';
-import {WebAPI} from './web-api';
-
-@inject(WebAPI)
 export class App {
+  configureRouter(config, router) {
+    config.title = 'Sentimental.ly';
+    config.map([
+      {
+        route: '',
+        name: 'lookup-form',
+        moduleId: 'containers/lookup-form/lookup-form'
+      },
+      {
+        route: 'lookups/:lookupId',
+        name: 'lookup-detail',
+        moduleId: 'containers/lookup-detail/lookup-detail'
+      }
+    ]);
 
-	constructor(api) {
-		this.api = api;
-	}
-
-	configureRouter(config, router) {
-		config.title = 'Sentimental.ly';
-		config.map([
-			{
-				route: '',
-				moduleId: 'no-lookup', 
-				title: 'Lookups'
-			},
-			{
-				route: 'lookups/:lookupId',
-				moduleId: 'lookup-result',
-				name: 'lookups'
-			}
-		]);
-
-		this.router = router;
-	}
+    this.router = router;
+  }
 }
