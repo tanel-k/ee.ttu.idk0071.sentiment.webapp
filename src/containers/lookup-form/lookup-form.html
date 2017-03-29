@@ -1,0 +1,13 @@
+<template>
+  <form>
+    <fieldset class="form-group">
+      <legend>Sentiment Lookup</legend>
+      <div class="form-group">
+        <label class="control-label">Keyword</label>
+        <input value.bind="entityName" class="form-control">
+        <small></small>
+      </div>
+    </fieldset>
+    <button  click.trigger="performLookup()" class="btn btn-primary" disabled.bind="!canLookup">Perform lookup</button>
+  </form>
+</template>

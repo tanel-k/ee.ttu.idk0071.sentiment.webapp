@@ -1,9 +1,6 @@
 <template>
 	<require from="bootstrap/css/bootstrap.css"></require>
-	<require from="select2/css/select2.css"></require>
 	<require from="./styles.css"></require>
-	<require from="./lookup-form"></require>
-	<require from="./lookup-result"></require>
 
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="navbar-header">
@@ -14,12 +11,7 @@
 		</div>
 	</nav>
 
-	<loading-indicator loading.bind="router.isNavigating || api.isRequesting()"></loading-indicator>
-
 	<div class="container">
-		<div class="row">
-			<lookup-form class="col-md-4"></lookup-form>
-			<router-view class="col-md-8"></router-view>
-		</div>
+		<router-view></router-view>
 	</div>
 </template>

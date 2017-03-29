@@ -136,15 +136,6 @@
 					},
 					"jquery",
 					{
-						"name": "select2",
-						"path": "../node_modules/select2/dist",
-						"main": "js/select2",
-						"deps": ["jquery"],
-						"resources": [
-							"css/select2.css"
-						]
-					},
-					{
 						"name": "blockUI",
 						"path": "../node_modules/block-ui",
 						"main": "jquery.blockUI.js",

@@ -1,1 +1,288 @@
-define("app",["exports","aurelia-framework","./web-api"],function(e,t,n){"use strict";function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0}),e.App=void 0;var i,r;e.App=(i=(0,t.inject)(n.WebAPI))(r=function(){function e(t){o(this,e),this.api=t}return e.prototype.configureRouter=function(e,t){e.title="Sentimental.ly",e.map([{route:"",moduleId:"no-lookup",title:"Lookups"},{route:"lookups/:lookupId",moduleId:"lookup-result",name:"lookups"}]),this.router=t},e}())||r}),define("environment",["exports"],function(e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default={debug:!1,testing:!1,gatewayURL:"http://localhost:8080/"}}),define("lookup-form",["exports","aurelia-framework","./web-api","./utils","aurelia-router","aurelia-event-aggregator","./messages","blockUI","jquery"],function(e,t,n,o,i,r,a,u){"use strict";function s(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function l(){$.blockUI({message:null})}function c(){$.unblockUI()}Object.defineProperty(e,"__esModule",{value:!0}),e.LookupForm=void 0;var f,d,p=(function(e){e&&e.__esModule?e:{default:e}}(u),function(){function e(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}return function(t,n,o){return n&&e(t.prototype,n),o&&e(t,o),t}}());e.LookupForm=(f=(0,t.inject)(n.WebAPI,i.Router,r.EventAggregator))(d=function(){function e(t,n,o){s(this,e),this.api=t,this.router=n,this.ea=o,this.entityName=""}return e.prototype.created=function(){},e.prototype.performLookup=function(){var e=this;this.ea.publish(new a.LookupStarted),l(),this.api.performLookup({entityName:this.entityName,domainIds:[]}).then(function(t){c(),e.router.navigate("lookups/"+t.id)})},p(e,[{key:"canLookup",get:function(){return!(0,o.isEmpty)(this.entityName)}}]),e}())||d}),define("lookup-result",["exports","aurelia-event-aggregator","./messages","./web-api"],function(e,t,n,o){"use strict";function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0}),e.LookupResult=void 0;e.LookupResult=function(){function e(t,o){i(this,e),this.api=t,this.ea=o,this.ea.subscribe(n.LookupStarted,function(e){})}return e.inject=function(){return[o.WebAPI,t.EventAggregator]},e.prototype.activate=function(e){var t=this;this.api.getLookupData(e.lookupId).then(function(e){t.lookupData=JSON.stringify(e,null," ")})},e}()}),define("main",["exports","./environment"],function(e,t){"use strict";function n(e){e.use.standardConfiguration().feature("resources"),o.default.debug&&e.use.developmentLogging(),o.default.testing&&e.use.plugin("aurelia-testing"),e.start().then(function(){return e.setRoot()})}Object.defineProperty(e,"__esModule",{value:!0}),e.configure=n;var o=function(e){return e&&e.__esModule?e:{default:e}}(t);Promise.config({warnings:{wForgottenReturn:!1}})}),define("messages",["exports"],function(e){"use strict";function t(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0});e.LookupStarted=function e(){t(this,e)}}),define("no-lookup",["exports"],function(e){"use strict";function t(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0});e.NoLookup=function e(){t(this,e),this.message="Use the form to see what other people think."}}),define("utils",["exports"],function(e){"use strict";function t(e){return!e||!e.trim()}Object.defineProperty(e,"__esModule",{value:!0}),e.isEmpty=t}),define("web-api",["exports","aurelia-framework","aurelia-fetch-client","./environment"],function(e,t,n,o){"use strict";function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0}),e.WebAPI=void 0;var r,a,u=function(e){return e&&e.__esModule?e:{default:e}}(o);e.WebAPI=(r=(0,t.inject)(n.HttpClient))(a=function(){function e(t){i(this,e),this.httpClient=t.configure(function(e){return e.useStandardConfiguration().withBaseUrl(u.default.gatewayURL)})}return e.prototype.isRequesting=function(){return this.httpClient.isRequesting},e.prototype.getLookupData=function(e){return this.httpClient.fetch("lookups/"+e).then(function(e){return e.json()})},e.prototype.performLookup=function(e){return this.httpClient.fetch("lookups",{method:"POST",body:JSON.stringify(e),headers:{"Content-type":"application/json"}}).then(function(e){return e.json()})},e}())||a}),define("resources/index",["exports"],function(e){"use strict";function t(e){e.globalResources(["./elements/loading-indicator","./elements/enhanced-select"])}Object.defineProperty(e,"__esModule",{value:!0}),e.configure=t}),define("resources/elements/enhanced-select",["exports","aurelia-framework","select2","jquery"],function(e,t,n){"use strict";function o(e,t,n,o){n&&Object.defineProperty(e,t,{enumerable:n.enumerable,configurable:n.configurable,writable:n.writable,value:n.initializer?n.initializer.call(o):void 0})}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t,n,o,i){var r={};return Object.keys(o).forEach(function(e){r[e]=o[e]}),r.enumerable=!!r.enumerable,r.configurable=!!r.configurable,("value"in r||r.initializer)&&(r.writable=!0),r=n.slice().reverse().reduce(function(n,o){return o(e,t,n)||n},r),i&&void 0!==r.initializer&&(r.value=r.initializer?r.initializer.call(i):void 0,r.initializer=void 0),void 0===r.initializer&&(Object.defineProperty(e,t,r),r=null),r}Object.defineProperty(e,"__esModule",{value:!0}),e.EnhancedSelect=void 0;var a,u,s,l,c,f,d,p,m;(function(e){e&&e.__esModule})(n),e.EnhancedSelect=(a=(0,t.inject)(Element),u=(0,t.bindable)({defaultBindingMode:t.bindingMode.oneWay}),s=(0,t.bindable)({defaultBindingMode:t.bindingMode.oneWay}),l=(0,t.bindable)({defaultBindingMode:t.bindingMode.twoWay}),a((f=function(){function e(t){i(this,e),o(this,"guid",d,this),o(this,"values",p,this),o(this,"value",m,this),this.element=t}return e.prototype.attached=function(){var e=this;this.selector=$(this.element).find("select").select2().on("select2:select",function(t){e.value=$(e.element).find("select").select2("val")})},e.prototype.detached=function(){this.selector.select2("destroy")},e}(),d=r(f.prototype,"guid",[u],{enumerable:!0,initializer:function(){return""}}),p=r(f.prototype,"values",[s],{enumerable:!0,initializer:null}),m=r(f.prototype,"value",[l],{enumerable:!0,initializer:null}),c=f))||c)}),define("resources/elements/loading-indicator",["exports","nprogress","aurelia-framework"],function(e,t,n){"use strict";function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0}),e.LoadingIndicator=void 0;var i=function(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t[n]=e[n]);return t.default=e,t}(t);e.LoadingIndicator=(0,n.decorators)((0,n.noView)(["nprogress/nprogress.css"]),(0,n.bindable)({name:"loading",defaultValue:!1})).on(function(){function e(){o(this,e)}return e.prototype.loadingChanged=function(e){e?i.start():i.done()},e}())}),define("text!app.html",["module"],function(e){e.exports='<template><require from="bootstrap/css/bootstrap.css"></require><require from="select2/css/select2.css"></require><require from="./styles.css"></require><require from="./lookup-form"></require><require from="./lookup-result"></require><nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="navbar-header"><a class="navbar-brand" href="#"><i class="fa fa-user"></i> <span>Sentimental.ly</span></a></div></nav><loading-indicator loading.bind="router.isNavigating || api.isRequesting()"></loading-indicator><div class="container"><div class="row"><lookup-form class="col-md-4"></lookup-form><router-view class="col-md-8"></router-view></div></div></template>'}),define("text!styles.css",["module"],function(e){e.exports='body { padding-top: 70px; }\r\n\r\nsection {\r\n  margin: 0 20px;\r\n}\r\n\r\n.blockOverlay {\r\n\tz-index: 2000 !important;\r\n}\r\n\r\n.navbar-nav li.loader {\r\n    margin: 12px 24px 0 6px;\r\n}\r\n\r\n.panel {\r\n  margin: 20px;\r\n}\r\n\r\n.button-bar {\r\n  right: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  border-top: 1px solid #ddd;\r\n  background: white;\r\n}\r\n\r\n.button-bar > button {\r\n  float: right;\r\n  margin: 20px;\r\n}\r\n\r\n.form-group.required .control-label:after {\r\n  content:"*";\r\n  color:red;\r\n}\r\n\r\n.sentiment-icon {\r\n  width: 50px;\r\n  height: 50px;\r\n  display: block;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n'}),define("text!lookup-form.html",["module"],function(e){e.exports='<template><form><fieldset class="form-group"><legend>Business Sentiment Lookup</legend><div class="form-group"><label class="control-label">Search phrase</label><input value.bind="entityName" class="form-control"></div></fieldset><button click.trigger="performLookup()" class="btn btn-primary" disabled.bind="!canLookup">Perform lookup</button></form></template>'}),define("text!lookup-result.html",["module"],function(e){e.exports='<template><div class="snapshot-report"><div class="row"><div class="col-md-6"><h4>Lookup data dump</h4></div><div class="col-md-6">${lookupData}</div></div></div></template>'}),define("text!no-lookup.html",["module"],function(e){e.exports='<template><div class="no-selection text-center"><h2>${message}</h2></div></template>'}),define("text!resources/elements/enhanced-select.html",["module"],function(e){e.exports='<template><select id="${guid}" class="form-control" value.bind="value"><option if.bind="withEmpty"></option><option repeat.for="val of values" value="${val.value}">${val.name}</option></select></template>'});
+define('app',['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var App = exports.App = function () {
+    function App() {
+      _classCallCheck(this, App);
+    }
+
+    App.prototype.configureRouter = function configureRouter(config, router) {
+      config.title = 'Sentimental.ly';
+      config.map([{
+        route: '',
+        name: 'lookup-form',
+        moduleId: 'containers/lookup-form/lookup-form'
+      }, {
+        route: 'lookups/:lookupId',
+        name: 'lookup-detail',
+        moduleId: 'containers/lookup-detail/lookup-detail'
+      }]);
+
+      this.router = router;
+    };
+
+    return App;
+  }();
+});
+define('environment',['exports'], function (exports) {
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = {
+		debug: true,
+		testing: true,
+		gatewayURL: 'http://localhost:8080/'
+	};
+});
+define('main',['exports', './environment'], function (exports, _environment) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+
+  var _environment2 = _interopRequireDefault(_environment);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  Promise.config({
+    warnings: {
+      wForgottenReturn: false
+    }
+  });
+
+  function configure(aurelia) {
+    aurelia.use.standardConfiguration().feature('resources');
+
+    if (_environment2.default.debug) {
+      aurelia.use.developmentLogging();
+    }
+
+    if (_environment2.default.testing) {
+      aurelia.use.plugin('aurelia-testing');
+    }
+
+    aurelia.start().then(function () {
+      return aurelia.setRoot();
+    });
+  }
+});
+define('lib/utils',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.isEmpty = isEmpty;
+  function isEmpty(val) {
+    return !val || !val.trim();
+  }
+});
+define('resources/index',["exports"], function (exports) {
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.configure = configure;
+	function configure(config) {
+		config.globalResources([]);
+	}
+});
+define('containers/lookup-detail/lookup-detail',['exports', 'aurelia-framework', '../../gateways/data/data-api'], function (exports, _aureliaFramework, _dataApi) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.LookupResult = undefined;
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _dec, _class;
+
+  var LookupResult = exports.LookupResult = (_dec = (0, _aureliaFramework.inject)(_dataApi.DataAPI), _dec(_class = function () {
+    function LookupResult(api) {
+      _classCallCheck(this, LookupResult);
+
+      this.api = api;
+    }
+
+    LookupResult.prototype.activate = function activate(params) {
+      var _this = this;
+
+      this.api.getLookupData(params.lookupId).then(function (lookupData) {
+        _this.lookupData = JSON.stringify(lookupData, null, ' ');
+      });
+    };
+
+    return LookupResult;
+  }()) || _class);
+});
+define('containers/lookup-form/lookup-form',['exports', 'aurelia-framework', '../../lib/utils', 'aurelia-router', 'blockUI', '../../gateways/data/data-api', 'jquery'], function (exports, _aureliaFramework, _utils, _aureliaRouter, _blockUI, _dataApi) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.LookupForm = undefined;
+
+  var _blockUI2 = _interopRequireDefault(_blockUI);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+  var _dec, _class;
+
+  var LookupForm = exports.LookupForm = (_dec = (0, _aureliaFramework.inject)(_dataApi.DataAPI, _aureliaRouter.Router), _dec(_class = function () {
+    function LookupForm(api, router) {
+      _classCallCheck(this, LookupForm);
+
+      this.api = api;
+      this.router = router;
+      this.entityName = '';
+    }
+
+    LookupForm.prototype.performLookup = function performLookup() {
+      var _this = this;
+
+      blockPage();
+
+      this.api.performLookup({
+        entityName: this.entityName,
+        domainIds: []
+      }).then(function (lookupResult) {
+        releasePage();
+        _this.router.navigate('lookups/' + lookupResult.id);
+      });
+    };
+
+    _createClass(LookupForm, [{
+      key: 'canLookup',
+      get: function get() {
+        return !(0, _utils.isEmpty)(this.entityName);
+      }
+    }]);
+
+    return LookupForm;
+  }()) || _class);
+
+
+  function blockPage() {
+    $.blockUI({ message: null });
+  }
+
+  function releasePage() {
+    $.unblockUI();
+  }
+});
+define('gateways/data/data-api',['exports', 'aurelia-framework', 'aurelia-fetch-client', '../../environment'], function (exports, _aureliaFramework, _aureliaFetchClient, _environment) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.DataAPI = undefined;
+
+  var _environment2 = _interopRequireDefault(_environment);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _dec, _class;
+
+  var DataAPI = exports.DataAPI = (_dec = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient), _dec(_class = function () {
+    function DataAPI(httpClient) {
+      _classCallCheck(this, DataAPI);
+
+      this.httpClient = httpClient.configure(function (config) {
+        return config.useStandardConfiguration().withBaseUrl(_environment2.default.gatewayURL);
+      });
+    }
+
+    DataAPI.prototype.isRequesting = function isRequesting() {
+      return this.httpClient.isRequesting;
+    };
+
+    DataAPI.prototype.getLookupData = function getLookupData(lookupId) {
+      return this.httpClient.fetch('lookups/' + lookupId).then(function (response) {
+        return response.json();
+      });
+    };
+
+    DataAPI.prototype.performLookup = function performLookup(lookupData) {
+      return this.httpClient.fetch('lookups', {
+        method: 'POST',
+        body: JSON.stringify(lookupData),
+        headers: {
+          'Content-type': 'application/json'
+        } }).then(function (response) {
+        return response.json();
+      });
+    };
+
+    return DataAPI;
+  }()) || _class);
+});
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\"><div class=\"navbar-header\"><a class=\"navbar-brand\" href=\"#\"><i class=\"fa fa-user\"></i> <span>Sentimental.ly</span></a></div></nav><div class=\"container\"><router-view></router-view></div></template>"; });
+define('text!styles.css', ['module'], function(module) { module.exports = "body { padding-top: 70px; }\r\n\r\nsection {\r\n  margin: 0 20px;\r\n}\r\n\r\n.blockOverlay {\r\n\tz-index: 2000 !important;\r\n}\r\n\r\n.navbar-nav li.loader {\r\n    margin: 12px 24px 0 6px;\r\n}\r\n\r\n.panel {\r\n  margin: 20px;\r\n}\r\n\r\n.button-bar {\r\n  right: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  border-top: 1px solid #ddd;\r\n  background: white;\r\n}\r\n\r\n.button-bar > button {\r\n  float: right;\r\n  margin: 20px;\r\n}\r\n\r\n.form-group.required .control-label:after {\r\n  content:\"*\";\r\n  color:red;\r\n}\r\n\r\n.sentiment-icon {\r\n  width: 50px;\r\n  height: 50px;\r\n  display: block;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n"; });
+define('text!containers/lookup-detail/lookup-detail.html', ['module'], function(module) { module.exports = "<template><div class=\"snapshot-report\"><div class=\"row\"><div class=\"col-md-6\"><h4>Lookup data dump</h4></div><div class=\"col-md-6\">${lookupData}</div></div></div></template>"; });
+define('text!containers/lookup-form/lookup-form.html', ['module'], function(module) { module.exports = "<template><form><fieldset class=\"form-group\"><legend>Sentiment Lookup</legend><div class=\"form-group\"><label class=\"control-label\">Keyword</label><input value.bind=\"entityName\" class=\"form-control\"> <small></small></div></fieldset><button click.trigger=\"performLookup()\" class=\"btn btn-primary\" disabled.bind=\"!canLookup\">Perform lookup</button></form></template>"; });
+//# sourceMappingURL=app-bundle.js.map
