@@ -20,35 +20,17 @@ export class WebAPI {
 		return this.httpClient.isRequesting;
 	}
 
-	getCountries() {
-		return this.httpClient
-			.fetch('classifiers/countries')
-			.then(response => { return response.json() });
-	}
-
-	getBusinessTypes() {
-		return this.httpClient
-			.fetch('classifiers/business-types')
-			.then(response => { return response.json() });
-	}
-
-	getLookupSnapshots(lookupId) {
-		return this.httpClient
-			.fetch('lookups/' + lookupId + '/snapshots')
-			.then(response => { return response.json() });
-	}
-
 	getLookupData(lookupId) {
 		return this.httpClient
 			.fetch('lookups/' + lookupId)
 			.then(response => { return response.json() });
 	}
 
-	performLookup(business) {
+	performLookup(lookupData) {
 		return this.httpClient
 		.fetch('lookups', {
 			method: 'POST',
-			body: JSON.stringify(business),
+			body: JSON.stringify(lookupData),
 			headers: {
 			'Content-type': 'application/json'
 			}})

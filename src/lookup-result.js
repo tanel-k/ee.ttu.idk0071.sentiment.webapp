@@ -18,11 +18,7 @@ export class LookupResult {
 
   activate(params) {
     this.api.getLookupData(params.lookupId).then(lookupData => {
-      this.lookupData = lookupData;
-    });
-
-    return this.api.getLookupSnapshots(params.lookupId).then(snapshotsResult => {
-      this.snapshots = snapshotsResult;
+      this.lookupData = JSON.stringify(lookupData, null, ' ');
     });
   }
 }

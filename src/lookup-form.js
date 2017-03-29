@@ -16,29 +16,16 @@ export class LookupForm {
 		this.api = api;
 		this.router = router;
 		this.ea = ea;
+
+		this.entityName = '';
 	}
 
 	created() {
-		this.api.getBusinessTypes().then(types => {
-				this.types = types.map(x => {
-					return { name: x.name, value: x.id };
-				});
-				this.types.unshift({});
-			});
 
-		this.api.getCountries().then(countries => {
-				this.countries = countries.map(x => {
-					return { name: x.name, value: x.code };
-			});
-			this.countries.unshift({});
-		});
 	}
 
 	get canLookup() {
-		return this.typeId
-			&& this.countryId
-			&& !isEmpty(this.businessName)
-			&& !this.api.isRequesting();
+		return !isEmpty(this.entityName)
 	}
 
 	performLookup() {
@@ -46,9 +33,8 @@ export class LookupForm {
 		blockPage();
 		
 		this.api.performLookup({
-			countryCode: this.countryId,
-			businessTypeId: this.typeId,
-			businessName: this.businessName
+			entityName: this.entityName,
+			domainIds: []
 		})
 		.then(lookupResult => {
 			releasePage();
