@@ -1,0 +1,14 @@
+<template>
+  <ai-dialog>
+    <ai-dialog-header>
+      <h4>Lookup submitted!</h4>
+    </ai-dialog-header>
+    <ai-dialog-body>
+      <p>Your lookup for <strong>${entityName}</strong> has been assigned the code <strong>${lookupResult.lookupId}</strong>.</p>
+      <p><a target="_blank" route-href="route: lookup-detail; params.bind: {lookupId:lookupResult.lookupId}">Click here</a> to view the lookup as it is being processed.</p>
+    </ai-dialog-body>
+    <ai-dialog-footer>
+      <button class="btn btn-warning" click.trigger="close()">Close</button>
+    </ai-dialog-footer>
+  </ai-dialog>
+</template>

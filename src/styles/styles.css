@@ -41,3 +41,12 @@ section {
   margin-left: auto;
   margin-right: auto;
 }
+
+ai-dialog-overlay.active {
+  background-color: black;
+  opacity: .5;
+}
+
+pie-chart > .au-target {
+  margin: 0 auto;
+}
