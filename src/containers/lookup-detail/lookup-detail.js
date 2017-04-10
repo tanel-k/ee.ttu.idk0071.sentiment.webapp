@@ -88,7 +88,7 @@ export class LookupDetail {
       .filter(d => d.id !== id);
     this.api.fetchDomainLookup(id)
       .then(cpltDomainLookup => {
-        this.completeDomainLookups.push(
+        this.completeDomainLookups.unshift(
           extendCompleteDomainLookup(flattenDomainLookup(cpltDomainLookup))
         );
       });
