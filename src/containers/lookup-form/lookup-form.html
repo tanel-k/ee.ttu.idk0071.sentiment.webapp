@@ -15,11 +15,12 @@
           </div>
           <div class="form-group">
             <label class="control-label">Lookup domains</label>
-            <select class="form-control" multiple value.bind="domainIds">
+            <!--<select class="form-control" multiple value.bind="domainIds">
               <option repeat.for="domainOption of domainOptions" value="${domainOption.value}">
                 ${domainOption.label}
               </option>
-            </select>
+            </select>-->
+            <drag-drop-select></drag-drop-select>
             <small>Press and hold the <em>Ctrl</em> key to select more than one domain</small>
           </div>
         </fieldset>
