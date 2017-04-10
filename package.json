@@ -6,10 +6,12 @@
   "dependencies": {
     "aurelia-animator-css": "^1.0.0",
     "aurelia-bootstrapper": "^1.0.0",
+    "aurelia-dialog": "^1.0.0-beta.3.0.1",
     "aurelia-fetch-client": "^1.1.1",
     "block-ui": "^2.70.1",
     "bluebird": "^3.4.1",
     "bootstrap": "^3.3.7",
+    "chart.js": "^2.5.0",
     "jquery": "^3.1.1",
     "requirejs": "^2.3.2",
     "text": "github:requirejs/text#latest",

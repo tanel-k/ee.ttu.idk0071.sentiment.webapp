@@ -16,20 +16,37 @@ export class DataAPI {
     return this.httpClient.isRequesting;
   }
 
-  getLookupData(lookupId) {
+  fetchLookup(lookupId) {
     return this.httpClient
-      .fetch('lookups/' + lookupId)
+      .fetch(`/lookups/${lookupId}`)
       .then(response => (response.json()));
   }
 
-  performLookup(lookupData) {
+  postLookup(lookupData) {
     return this.httpClient
-    .fetch('lookups', {
+    .fetch('/lookups', {
       method: 'POST',
       body: JSON.stringify(lookupData),
       headers: {
         'Content-type': 'application/json'
       }})
     .then(response => (response.json()));
+  }
+
+  fetchDomains() {
+    return this.httpClient
+      .fetch('/domains')
+      .then(response => (response.json()));
+  }
+
+  fetchDomainLookup(domainLookupId) {
+    return this.httpClient
+      .fetch(`/domain-lookups/${domainLookupId}`)
+      .then(response => (response.json()));
+  }
+
+  getDomainLookupEventSource(domainLookupId) {
+    return new EventSource(
+      `${environment.gatewayURL}/domain-lookups/${domainLookupId}/updates`);
   }
 }
