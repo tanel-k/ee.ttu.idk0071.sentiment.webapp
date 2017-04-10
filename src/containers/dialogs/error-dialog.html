@@ -1,0 +1,14 @@
+<template>
+  <require from="./error-dialog.css"></require>
+  <ai-dialog>
+    <ai-dialog-header>
+      <h4 class="red">Warning</h4>
+    </ai-dialog-header>
+    <ai-dialog-body>
+      <p>${message}</p>
+    </ai-dialog-body>
+    <ai-dialog-footer>
+      <button class="btn btn-warning" click.trigger="close()">Close</button>
+    </ai-dialog-footer>
+  </ai-dialog>
+</template>
