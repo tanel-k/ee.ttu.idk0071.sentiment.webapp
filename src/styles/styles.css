@@ -50,3 +50,19 @@ ai-dialog-overlay.active {
 pie-chart > .au-target {
   margin: 0 auto;
 }
+
+.fade-in {
+  -webkit-animation: fadein 1s;
+	-moz-animation: fadein 1s;
+	-ms-animation: fadein 1s;
+	-o-animation: fadein 1s;
+	animation: fadein 1s;
+}
+
+.fade-out {
+  -webkit-animation: fadeout 1s;
+	-moz-animation: fadeout 1s;
+	-ms-animation: fadeout 1s;
+	-o-animation: fadeout 1s;
+	animation: fadeout 1s;
+}
