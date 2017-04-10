@@ -34,7 +34,6 @@ export class LookupForm {
       })
       .catch((err) => {
         releasePage();
-        console.log(err);
         this.openErrorDialog(MSG_NETWORK_ERR);
       });
   }

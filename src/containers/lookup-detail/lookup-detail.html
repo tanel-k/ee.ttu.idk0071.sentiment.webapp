@@ -1,5 +1,5 @@
 <template>
-  <div class="snapshot-report">
+  <div class="snapshot-report" if.bind="!isLoading">
     <div class="row">
       <div class="col-md-12">
         <h1><em>${lookupData.lookupEntity.name}</em> lookup <small>code: ${lookupData.id}</small></h1>
@@ -11,7 +11,7 @@
         <h3>Incomplete lookups</h3>
 
         <div repeat.for="domainLookup of incompleteDomainLookups | orderBy:'domainName':'asc'"
-          class="panel ${domainLookup.currStateName === 'Queued' ? 'panel-default' : 'panel-warning'}">
+          class="fade-in panel ${domainLookup.currStateName === 'Queued' ? 'panel-default' : 'panel-warning'}">
           <div class="panel-heading">
             ${domainLookup.domain.name}
           </div>
@@ -27,7 +27,7 @@
         <h3>Complete lookups</h3>
 
         <div repeat.for="domainLookup of completeDomainLookups | orderBy:'isSuccess':'asc' | orderBy:'domainName':'asc'"
-          class="panel ${domainLookup.isError ? 'panel-danger' : 'panel-success'}">
+          class="fade-in panel ${domainLookup.isError ? 'panel-danger' : 'panel-success'}">
           <div class="panel-heading">
             ${domainLookup.domain.name}
           </div>
