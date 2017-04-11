@@ -2,5 +2,4 @@ node_modules
 .idea
 .DS_STORE
 
-scripts/app-bundle.js
-scripts/vendor-bundle.js
+scripts/*
