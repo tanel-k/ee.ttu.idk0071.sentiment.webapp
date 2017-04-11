@@ -1,13 +1,30 @@
 <template>
   <require from="./drag-drop-select.css"></require>
-  <div class="drag-drop-select">
-    <ol data-draggable="target">
-      <li repeat.for="option of options" data-value="${option.value}" data-draggable="item">${option.label}</li>
-      <li data-draggable="item" data-value="static">static</li>
-    </ol>
 
-    <ol data-draggable="target">
-      <li repeat.for="option of options" data-value="${option.value}" data-draggable="item">${option.label}</li>
-    </ol>
+  <div class="drag-drop-select row">
+    <div class="col-md-6">
+      <h5 class="no-user-select">${availableTitle}</h5>
+      <ol
+        data-draggable="target"
+        aria-dropeffect="none"
+        class="source-container"
+      >
+        <li repeat.for="option of options"
+          draggable="true"
+          aria-grabbed="false"
+          tabindex="0"
+          data-value="${option.value}" data-draggable="item"
+        >${option.label}</li>
+      </ol>
+    </div>
+
+    <div class="col-md-6">
+      <h5 class="no-user-select">${selectedTitle}</h5>
+      <ol
+        data-draggable="target"
+        aria-dropeffect="none"
+        class="target-container"
+      ></ol>
+    </div>
   </div>
 </template>

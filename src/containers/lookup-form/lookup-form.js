@@ -20,11 +20,11 @@ export class LookupForm {
 
     this.entityName = '';
     this.domainIds = [];
+    this.regularSelectMode = false;
   }
 
   attached() {
-    this.domainOptions = [{label: 'test', value: 'test'}];
-    /*blockPage();
+    blockPage();
     this.api.fetchDomains()
       .then((domains) => {
         releasePage();
@@ -36,7 +36,7 @@ export class LookupForm {
       .catch((err) => {
         releasePage();
         this.openErrorDialog(MSG_NETWORK_ERR);
-      });*/
+      });
   }
 
   get canLookup() {
