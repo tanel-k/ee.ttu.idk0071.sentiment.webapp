@@ -2,15 +2,12 @@
   <require from="./drag-drop-select.css"></require>
   <div class="drag-drop-select">
     <ol data-draggable="target">
-      <li data-draggable="item">Item 0</li>
-      <li data-draggable="item">Item 1</li>
-      <li data-draggable="item">Item 2</li>
-      <li data-draggable="item">Item 3</li>
+      <li repeat.for="option of options" data-value="${option.value}" data-draggable="item">${option.label}</li>
+      <li data-draggable="item" data-value="static">static</li>
     </ol>
 
     <ol data-draggable="target">
-      <li data-draggable="item">Item 4</li>
-      <li data-draggable="item">Item 5</li>
+      <li repeat.for="option of options" data-value="${option.value}" data-draggable="item">${option.label}</li>
     </ol>
   </div>
 </template>

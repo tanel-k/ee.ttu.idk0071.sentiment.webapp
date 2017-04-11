@@ -1,24 +1,37 @@
 // courtesy of https://www.sitepoint.com/accessible-drag-drop/
 // adapted and converted to ES6
-import { inject } from 'aurelia-framework';
+import { inject, bindable } from 'aurelia-framework';
 
 @inject(Element)
 export class DragDropSelect {
+  @bindable options = [];
+
   constructor(element) {
     this.element = element;
   }
 
   attached() {
+    // called before render
+    this.initializeDragDropAreas();
+    this.attachMutationListeners();
+  }
+
+  attachMutationListeners() {
+    console.warn('not implemented yet');
+  }
+
+  initializeDragDropAreas() {
     if (!document.querySelectorAll || !('draggable' in document.createElement('span')) || window.opera) {
       return;
     }
 
     //get the collection of draggable targets and add their draggable attribute
-    const targets = [].slice.call(document.querySelectorAll('[data-draggable="target"]'));
+    const targets = [].slice.call(this.element.querySelectorAll('[data-draggable="target"]'));
     targets.forEach(e => e.setAttribute('aria-dropeffect', 'none'));
 
     //get the collection of draggable items and add their draggable attributes
-    const items = [].slice.call(document.querySelectorAll('[data-draggable="item"]'));
+    const items = [].slice.call(this.element.querySelectorAll('[data-draggable="item"]'));
+
     items.forEach(e => {
       e.setAttribute('draggable', 'true');
       e.setAttribute('aria-grabbed', 'false');

@@ -23,6 +23,7 @@ export class LookupForm {
   }
 
   attached() {
+    this.domainOptions = [{label: 'test', value: 'test'}];
     /*blockPage();
     this.api.fetchDomains()
       .then((domains) => {

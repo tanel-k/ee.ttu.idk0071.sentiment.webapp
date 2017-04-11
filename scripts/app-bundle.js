@@ -498,7 +498,9 @@ define('containers/lookup-form/lookup-form',['exports', 'aurelia-framework', 'au
       this.domainIds = [];
     }
 
-    LookupForm.prototype.attached = function attached() {};
+    LookupForm.prototype.attached = function attached() {
+      this.domainOptions = [{ label: 'test', value: 'test' }];
+    };
 
     LookupForm.prototype.performLookup = function performLookup() {
       var _this = this;
@@ -788,32 +790,87 @@ define('resources/elements/form-elements/drag-drop-select',['exports', 'aurelia-
   });
   exports.DragDropSelect = undefined;
 
+  function _initDefineProp(target, property, descriptor, context) {
+    if (!descriptor) return;
+    Object.defineProperty(target, property, {
+      enumerable: descriptor.enumerable,
+      configurable: descriptor.configurable,
+      writable: descriptor.writable,
+      value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
+    });
+  }
+
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
     }
   }
 
-  var _dec, _class;
+  function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+    var desc = {};
+    Object['ke' + 'ys'](descriptor).forEach(function (key) {
+      desc[key] = descriptor[key];
+    });
+    desc.enumerable = !!desc.enumerable;
+    desc.configurable = !!desc.configurable;
 
-  var DragDropSelect = exports.DragDropSelect = (_dec = (0, _aureliaFramework.inject)(Element), _dec(_class = function () {
+    if ('value' in desc || desc.initializer) {
+      desc.writable = true;
+    }
+
+    desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+      return decorator(target, property, desc) || desc;
+    }, desc);
+
+    if (context && desc.initializer !== void 0) {
+      desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+      desc.initializer = undefined;
+    }
+
+    if (desc.initializer === void 0) {
+      Object['define' + 'Property'](target, property, desc);
+      desc = null;
+    }
+
+    return desc;
+  }
+
+  function _initializerWarningHelper(descriptor, context) {
+    throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
+  }
+
+  var _dec, _class, _desc, _value, _class2, _descriptor;
+
+  var DragDropSelect = exports.DragDropSelect = (_dec = (0, _aureliaFramework.inject)(Element), _dec(_class = (_class2 = function () {
     function DragDropSelect(element) {
       _classCallCheck(this, DragDropSelect);
+
+      _initDefineProp(this, 'options', _descriptor, this);
 
       this.element = element;
     }
 
     DragDropSelect.prototype.attached = function attached() {
+      this.initializeDragDropAreas();
+      this.attachMutationListeners();
+    };
+
+    DragDropSelect.prototype.attachMutationListeners = function attachMutationListeners() {
+      console.warn('not implemented yet');
+    };
+
+    DragDropSelect.prototype.initializeDragDropAreas = function initializeDragDropAreas() {
       if (!document.querySelectorAll || !('draggable' in document.createElement('span')) || window.opera) {
         return;
       }
 
-      var targets = [].slice.call(document.querySelectorAll('[data-draggable="target"]'));
+      var targets = [].slice.call(this.element.querySelectorAll('[data-draggable="target"]'));
       targets.forEach(function (e) {
         return e.setAttribute('aria-dropeffect', 'none');
       });
 
-      var items = [].slice.call(document.querySelectorAll('[data-draggable="item"]'));
+      var items = [].slice.call(this.element.querySelectorAll('[data-draggable="item"]'));
+
       items.forEach(function (e) {
         e.setAttribute('draggable', 'true');
         e.setAttribute('aria-grabbed', 'false');
@@ -1016,7 +1073,12 @@ define('resources/elements/form-elements/drag-drop-select',['exports', 'aurelia-
     };
 
     return DragDropSelect;
-  }()) || _class);
+  }(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'options', [_aureliaFramework.bindable], {
+    enumerable: true,
+    initializer: function initializer() {
+      return [];
+    }
+  })), _class2)) || _class);
 });
 define('resources/elements/graphs/pie-chart',['exports', 'aurelia-framework', 'chart.js', './utils/colors'], function (exports, _aureliaFramework, _chart, _colors) {
   'use strict';
@@ -1895,11 +1957,11 @@ define('text!containers/dialogs/error-dialog.html', ['module'], function(module)
 define('text!styles/styles.css', ['module'], function(module) { module.exports = "body { padding-top: 70px; }\r\n\r\nsection {\r\n  margin: 0 20px;\r\n}\r\n\r\n.blockOverlay {\r\n\tz-index: 2000 !important;\r\n}\r\n\r\n.navbar-nav li.loader {\r\n    margin: 12px 24px 0 6px;\r\n}\r\n\r\n.panel {\r\n  margin: 20px;\r\n}\r\n\r\n.button-bar {\r\n  right: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  border-top: 1px solid #ddd;\r\n  background: white;\r\n}\r\n\r\n.button-bar > button {\r\n  float: right;\r\n  margin: 20px;\r\n}\r\n\r\n.form-group.required .control-label:after {\r\n  content:\"*\";\r\n  color:red;\r\n}\r\n\r\n.sentiment-icon {\r\n  width: 50px;\r\n  height: 50px;\r\n  display: block;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\nai-dialog-overlay.active {\r\n  background-color: black;\r\n  opacity: .5;\r\n}\r\n\r\npie-chart > .au-target {\r\n  margin: 0 auto;\r\n}\r\n\r\n.fade-in {\r\n  -webkit-animation: fadein 1s;\r\n\t-moz-animation: fadein 1s;\r\n\t-ms-animation: fadein 1s;\r\n\t-o-animation: fadein 1s;\r\n\tanimation: fadein 1s;\r\n}\r\n\r\n.fade-out {\r\n  -webkit-animation: fadeout 1s;\r\n\t-moz-animation: fadeout 1s;\r\n\t-ms-animation: fadeout 1s;\r\n\t-o-animation: fadeout 1s;\r\n\tanimation: fadeout 1s;\r\n}\r\n"; });
 define('text!containers/lookup-detail/lookup-detail.html', ['module'], function(module) { module.exports = "<template><div class=\"snapshot-report\" if.bind=\"!isLoading\"><div class=\"row\"><div class=\"col-md-12\"><h1><em>${lookupData.lookupEntity.name}</em> lookup <small>code: ${lookupData.id}</small></h1></div></div><div class=\"row\"><div class=\"${hasCompleteLookups ? 'col-md-6' : 'col-md-12'}\" if.bind=\"incompleteDomainLookups.length > 0\"><h3>Incomplete lookups</h3><div repeat.for=\"domainLookup of incompleteDomainLookups | orderBy:'domainName':'asc'\" class=\"fade-in panel ${domainLookup.currStateName === 'Queued' ? 'panel-default' : 'panel-warning'}\"><div class=\"panel-heading\">${domainLookup.domain.name}</div><div class=\"panel-body\"><p if.bind=\"domainLookup.currStateName === 'In progress'\">This lookup is being processed</p><p if.bind=\"domainLookup.currStateName === 'Queued'\">This lookup is waiting for a processor</p></div></div></div><div class=\"${hasIncompleteLookups ? 'col-md-6' : 'col-md-12'}\" if.bind=\"completeDomainLookups.length > 0\"><h3>Complete lookups</h3><div repeat.for=\"domainLookup of completeDomainLookups\" class=\"fade-in panel ${domainLookup.isError ? 'panel-danger' : 'panel-success'}\"><div class=\"panel-heading\">${domainLookup.domain.name}</div><div class=\"panel-body\"><div if.bind=\"domainLookup.isSuccess === true\"><div class=\"row\"><div class=\"${hasIncompleteLookups ? 'col-md-12' : 'col-md-6'}\"><div class=\"panel panel-primary\"><div class=\"panel-heading\">Results</div><div class=\"panel-body\"><div>Total text nodes processed: <strong>${domainLookup.totalCount}</strong></div><div>Positive sources: <strong>${domainLookup.positiveCount}</strong></div><div>Neutral sources: <strong>${domainLookup.neutralCount}</strong></div><div>Negative sources: <strong>${domainLookup.negativeCount}</strong></div></div></div></div><div class=\"${hasIncompleteLookups ? 'col-md-12' : 'col-md-6'}\"><pie-chart items.bind=\"domainLookup.chartDataItems\" width=\"325\" height=\"300\"></pie-chart></div></div></div><div if.bind=\"domainLookup.isError === true\"><p>An error occurred while processing this lookup</p></div></div></div></div></div></div></template>"; });
 define('text!containers/dialogs/error-dialog.css', ['module'], function(module) { module.exports = ".red {\r\n  color: red;\r\n}"; });
-define('text!containers/lookup-form/lookup-form.html', ['module'], function(module) { module.exports = "<template><div class=\"row\"><div class=\"col-md-12\"><h1>Submit a lookup request</h1></div></div><div class=\"row\"><div class=\"col-md-12\"><form><fieldset class=\"form-group\"><div class=\"form-group\"><label class=\"control-label\">Keyword</label><input value.bind=\"entityName\" class=\"form-control\"> <small></small></div><div class=\"form-group\"><label class=\"control-label\">Lookup domains</label><drag-drop-select></drag-drop-select><small>Press and hold the <em>Ctrl</em> key to select more than one domain</small></div></fieldset><button click.trigger=\"performLookup()\" class=\"btn btn-block btn-primary\" disabled.bind=\"!canLookup\">Perform lookup</button></form></div></div></template>"; });
 define('text!resources/elements/form-elements/drag-drop-select.css', ['module'], function(module) { module.exports = ".drag-drop-select {\r\n  width: 100%;\r\n}\r\n\r\n.drag-drop-select + small {\r\n  display: inline-block;\r\n}\r\n\r\n/* draggable targets */\r\n[data-draggable=\"target\"] {\r\n  float:left;\r\n  list-style-type:none;\r\n  \r\n  width:50%;\r\n  height:7.5em;\r\n  overflow-y:auto;\r\n  \r\n  margin: 0 auto/*0 0.5em 0.5em 0*/;\r\n  padding:0.5em;\r\n  \r\n  border:2px solid #dce4ec;\r\n  border-radius:0.2em;\r\n  \r\n  /*background:#ddd;*/\r\n  /*color:#555;*/\r\n}\r\n\r\n/* drop target state */\r\n[data-draggable=\"target\"][aria-dropeffect=\"move\"] {\r\n  border-color:#68b;\r\n  background:#fff;\r\n}\r\n\r\n/* drop target focus and dragover state */\r\n[data-draggable=\"target\"][aria-dropeffect=\"move\"]:focus,\r\n[data-draggable=\"target\"][aria-dropeffect=\"move\"].dragover {\r\n  outline:none;\r\n  box-shadow:0 0 0 1px #fff, 0 0 0 3px #68b;\r\n}\r\n\r\n/* draggable items */\r\n[data-draggable=\"item\"] {\r\n  display:block;\r\n  list-style-type:none;\r\n  \r\n  margin:0 0 2px 0;\r\n  padding:0.2em 0.4em;\r\n  \r\n  border-radius:0.2em;\r\n  \r\n  line-height:1.3;\r\n}\r\n\r\n/* items focus state */\r\n[data-draggable=\"item\"]:focus {\r\n  outline:none;\r\n  box-shadow:0 0 0 2px #68b, inset 0 0 0 1px #ddd;\r\n}\r\n\r\n/* items grabbed state */\r\n[data-draggable=\"item\"][aria-grabbed=\"true\"] {\r\n  background:#8ad;\r\n  color:#fff;\r\n}"; });
+define('text!containers/lookup-form/lookup-form.html', ['module'], function(module) { module.exports = "<template><div class=\"row\"><div class=\"col-md-12\"><h1>Submit a lookup request</h1></div></div><div class=\"row\"><div class=\"col-md-12\"><form><fieldset class=\"form-group\"><div class=\"form-group\"><label class=\"control-label\">Keyword</label><input value.bind=\"entityName\" class=\"form-control\"> <small></small></div><div class=\"form-group\"><label class=\"control-label\">Lookup domains</label><drag-drop-select options.bind=\"domainOptions\"></drag-drop-select><small>Press and hold the <em>Ctrl</em> key to select more than one domain</small></div></fieldset><button click.trigger=\"performLookup()\" class=\"btn btn-block btn-primary\" disabled.bind=\"!canLookup\">Perform lookup</button></form></div></div></template>"; });
 define('text!containers/main-page/main-page.html', ['module'], function(module) { module.exports = "<template><div class=\"jumbotron\"><h1>Sentiment analysis for the masses</h1><p><a route-href=\"route: lookup-form\">Click here</a> to find out how the Internet feels</p></div></template>"; });
 define('text!containers/general/not-found/not-found.html', ['module'], function(module) { module.exports = "<template><div class=\"jumbotron\"><h1>404 Not Found</h1><p><span>Click </span><a href=\"/\">here</a><span> to return to the index.</span></p></div></template>"; });
 define('text!containers/lookup-form/dialogs/lookup-submitted.html', ['module'], function(module) { module.exports = "<template><ai-dialog><ai-dialog-header><h4>Lookup submitted!</h4></ai-dialog-header><ai-dialog-body><p>Your lookup for <strong>${entityName}</strong> has been assigned the code <strong>${lookupResult.lookupId}</strong>.</p><p><a target=\"_blank\" route-href=\"route: lookup-detail; params.bind: {lookupId:lookupResult.lookupId}\">Click here</a> to view the lookup as it is being processed.</p></ai-dialog-body><ai-dialog-footer><button class=\"btn btn-warning\" click.trigger=\"close()\">Close</button></ai-dialog-footer></ai-dialog></template>"; });
-define('text!resources/elements/form-elements/drag-drop-select.html', ['module'], function(module) { module.exports = "<template><require from=\"./drag-drop-select.css\"></require><div class=\"drag-drop-select\"><ol data-draggable=\"target\"><li data-draggable=\"item\">Item 0</li><li data-draggable=\"item\">Item 1</li><li data-draggable=\"item\">Item 2</li><li data-draggable=\"item\">Item 3</li></ol><ol data-draggable=\"target\"><li data-draggable=\"item\">Item 4</li><li data-draggable=\"item\">Item 5</li></ol></div></template>"; });
+define('text!resources/elements/form-elements/drag-drop-select.html', ['module'], function(module) { module.exports = "<template><require from=\"./drag-drop-select.css\"></require><div class=\"drag-drop-select\"><ol data-draggable=\"target\"><li repeat.for=\"option of options\" data-value=\"${option.value}\" data-draggable=\"item\">${option.label}</li><li data-draggable=\"item\" data-value=\"static\">static</li></ol><ol data-draggable=\"target\"><li repeat.for=\"option of options\" data-value=\"${option.value}\" data-draggable=\"item\">${option.label}</li></ol></div></template>"; });
 define('text!resources/elements/graphs/pie-chart.html', ['module'], function(module) { module.exports = "<template><div css=\"width: ${width}px; height: ${height}px\"><canvas class=\"chart-canvas\" width=\"${width}\" height=\"${height}\"></canvas></div></template>"; });
 //# sourceMappingURL=app-bundle.js.map
