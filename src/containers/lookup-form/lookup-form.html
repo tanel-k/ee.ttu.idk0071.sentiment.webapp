@@ -15,13 +15,19 @@
           </div>
           <div class="form-group">
             <label class="control-label">Lookup domains</label>
-            <!--<select class="form-control" multiple value.bind="domainIds">
+            <select if.bind="regularSelectMode" class="form-control" multiple value.bind="domainIds">
               <option repeat.for="domainOption of domainOptions" value="${domainOption.value}">
                 ${domainOption.label}
               </option>
-            </select>-->
-            <drag-drop-select></drag-drop-select>
-            <small>Press and hold the <em>Ctrl</em> key to select more than one domain</small>
+            </select>
+            <drag-drop-select 
+              if.bind="!regularSelectMode" 
+              options.bind="domainOptions"
+              available-title="Available"
+              selected-title="Selected"
+              value.bind="domainIds"
+            ></drag-drop-select>
+            <small class="no-user-select">Drag and drop to select.<br/>Press and hold the <em>Ctrl</em> key to select more than one domain</small>
           </div>
         </fieldset>
         <button click.trigger="performLookup()" class="btn btn-block btn-primary" disabled.bind="!canLookup">Perform lookup</button>
