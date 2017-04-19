@@ -1,0 +1,37 @@
+<template>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Submit a lookup request</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <form>
+        <fieldset class="form-group">
+          <div class="form-group">
+            <label class="control-label">Keyword</label>
+            <input value.bind="entityName" class="form-control">
+            <small></small>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Lookup domains</label>
+            <select if.bind="regularSelectMode" class="form-control" multiple value.bind="domainIds">
+              <option repeat.for="domainOption of domainOptions" value="${domainOption.value}">
+                ${domainOption.label}
+              </option>
+            </select>
+            <drag-drop-select 
+              if.bind="!regularSelectMode" 
+              options.bind="domainOptions"
+              available-title="Available"
+              selected-title="Selected"
+              value.bind="domainIds"
+            ></drag-drop-select>
+            <small class="no-user-select">Drag and drop to select.<br/>Press and hold the <em>Ctrl</em> key to select more than one domain</small>
+          </div>
+        </fieldset>
+        <button click.trigger="performLookup()" class="btn btn-block btn-primary" disabled.bind="!canLookup">Perform lookup</button>
+      </form>
+    </div>
+  </div>
+</template>

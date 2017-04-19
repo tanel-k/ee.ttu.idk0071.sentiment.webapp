@@ -1,0 +1,64 @@
+<template>
+  <div class="snapshot-report" if.bind="!isLoading">
+    <div class="row">
+      <div class="col-md-12">
+        <h1><em>${lookupData.lookupEntity.name}</em> lookup <small>code: ${lookupData.id}</small></h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="${hasCompleteLookups ? 'col-md-6' : 'col-md-12'}" if.bind="incompleteDomainLookups.length > 0">
+        <h3>Incomplete lookups</h3>
+
+        <div repeat.for="domainLookup of incompleteDomainLookups | orderBy:'domainName':'asc'"
+          class="fade-in panel ${domainLookup.currStateName === 'Queued' ? 'panel-default' : 'panel-warning'}">
+          <div class="panel-heading">
+            ${domainLookup.domain.name}
+          </div>
+
+          <div class="panel-body">
+            <p if.bind="domainLookup.currStateName === 'In progress'">This lookup is being processed</p>
+            <p if.bind="domainLookup.currStateName === 'Queued'">This lookup is waiting for a processor</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="${hasIncompleteLookups ? 'col-md-6' : 'col-md-12'}" if.bind="completeDomainLookups.length > 0">
+        <h3>Complete lookups</h3>
+
+        <div repeat.for="domainLookup of completeDomainLookups"
+          class="fade-in panel ${domainLookup.isError ? 'panel-danger' : 'panel-success'}">
+          <div class="panel-heading">
+            ${domainLookup.domain.name}
+          </div>
+
+          <div class="panel-body">
+            <div if.bind="domainLookup.isSuccess === true">
+              <div class="row">
+                <div class="${hasIncompleteLookups ? 'col-md-12' : 'col-md-6'}">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                      Results
+                    </div>
+                    <div class="panel-body">
+                      <div>Total text nodes processed: <strong>${domainLookup.totalCount}</strong></div>
+                      <div>Positive sources: <strong>${domainLookup.positiveCount}</strong></div>
+                      <div>Neutral sources: <strong>${domainLookup.neutralCount}</strong></div>
+                      <div>Negative sources: <strong>${domainLookup.negativeCount}</strong></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="${hasIncompleteLookups ? 'col-md-12' : 'col-md-6'}">
+                  <pie-chart items.bind="domainLookup.chartDataItems" width="325" height="300"></pie-chart>
+                </div>
+              </div>
+            </div>
+            <div if.bind="domainLookup.isError === true">
+              <p>An error occurred while processing this lookup</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
