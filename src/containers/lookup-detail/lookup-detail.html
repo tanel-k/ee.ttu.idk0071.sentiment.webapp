@@ -54,7 +54,9 @@
               </div>
             </div>
             <div if.bind="domainLookup.isError === true">
-              <p>An error occurred while processing this lookup</p>
+              <p>An error occurred while processing this lookup.
+                <button class="btn btn-link" click.delegate="restartDomainLookup(domainLookup.id)">Restart</button>
+              </p>
             </div>
           </div>
         </div>
