@@ -4,6 +4,7 @@ export function configure(config) {
     './value-converters/filter-exact',
     './value-converters/order-by',
     './elements/graphs/pie-chart',
+    './elements/graphs/line-chart',
     './elements/form-elements/drag-drop-select'
   ]);
 }

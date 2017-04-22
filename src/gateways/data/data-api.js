@@ -24,13 +24,13 @@ export class DataAPI {
 
   postLookup(lookupData) {
     return this.httpClient
-    .fetch('/lookups', {
-      method: 'POST',
-      body: JSON.stringify(lookupData),
-      headers: {
-        'Content-type': 'application/json'
-      }})
-    .then(response => (response.json()));
+      .fetch('/lookups', {
+        method: 'POST',
+        body: JSON.stringify(lookupData),
+        headers: {
+          'Content-type': 'application/json'
+        }})
+      .then(response => (response.json()));
   }
 
   fetchDomains() {

@@ -2,7 +2,7 @@ import { inject, bindable } from 'aurelia-framework';
 
 import Chart from 'chart.js';
 
-import { colorMap } from './utils/colors';
+import { colorMap } from './utils/chart-utils/colors';
 
 @inject(Element)
 export class PieChart {
