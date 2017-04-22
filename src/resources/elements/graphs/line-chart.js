@@ -17,25 +17,39 @@ export class LineChart {
 
   attached() {
     const date = new Date();
-    const sampleData = [
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), y: 200},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2), y: 3},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 3), y: 510},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 4), y: 100},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5), y: 71}
-    ];
+    const sampleData1 = { label: 'Positivity',  color: 'green', data: [
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), y: 20},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2), y: 30},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 3), y: 50},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 4), y: 10},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5), y: 30}
+    ]};
+    const sampleData2 = { label: 'Negativity', color: 'red', data: [
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), y: 40},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2), y: 30},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 3), y: 50},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 4), y: 20},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5), y: 40}
+    ]};
+    const sampleData3 = { label: 'Neutrality', color: 'yellow', data: [
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), y: 40},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2), y: 40},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 3), y: 0},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 4), y: 70},
+      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5), y: 30}
+    ]};
     const sampleConfig = {
-      title: 'Negativity score',
+      title: 'Test',
       color: 'red',
       xConfig: {
         type: 'time',
         label: 'Time'
       },
       yConfig: {
-        label: 'Score'
+        label: '%'
       }
     };
-    const chartConfig = this.mapDataConfigToChartConfig(sampleData, sampleConfig);
+    const chartConfig = this.mapDataConfigToChartConfig([sampleData1, sampleData2, sampleData3], sampleConfig);
     this.canvas = this.element.querySelector('.chart-canvas');
     this.chart = new Chart(this.canvas, chartConfig);
   }
@@ -44,12 +58,7 @@ export class LineChart {
     return {
       type: 'line',
       data: {
-        datasets: [{
-          label: title,
-          data: [...dataItems],
-          fill: true,
-          backgroundColor: colorMap[color].backgroundColor
-        }]
+        datasets: this.mapDataItemsToDataSets(dataItems)
       },
       options: {
         responsive: true,
@@ -62,6 +71,20 @@ export class LineChart {
           yAxes: [this.mapAxisConfigToScaleConfig(yConfig)]
         }
       }
+    };
+  }
+
+  mapDataItemsToDataSets(dataItems) {
+    return dataItems.map(dataItem => this.mapDataItemToDataSet(dataItem));
+  }
+
+  mapDataItemToDataSet({label, color, data}) {
+    return {
+      label,
+      data,
+      fill: false,
+      borderColor: colorMap[color].backgroundColor,
+      backgroundColor: colorMap[color].backgroundColor
     };
   }
 
