@@ -1,0 +1,33 @@
+<template>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>View sentiment history</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="input-group">
+        <span class="input-group-addon" title="* Keyword">Keyword</span>
+        <input class="form-control" type="text" value.bind="entityName">
+
+        <span class="input-group-addon" title="* Keyword">Domain</span>
+        <select class="form-control" value.bind="domainId">
+          <option repeat.for="domainOption of domainOptions" value="${domainOption.value}">
+            ${domainOption.label}
+          </option>
+        </select>
+
+        <span class="input-group-btn">
+          <button click.trigger="performSearch()" disabled.bind="!canSearch" class="btn btn-primary">Search</button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+
+    </div>
+  </div>
+</template>

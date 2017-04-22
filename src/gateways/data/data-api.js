@@ -45,6 +45,18 @@ export class DataAPI {
       .then(response => (response.json()));
   }
 
+  fetchLookupStatistics(entityName, domainId) {
+    return this.httpClient
+      .fetch(`/lookup-entities/history?entityName=${entityName}&domainId=${domainId}`)
+      .then(response => (response.json()));
+  }
+
+  fetchLookupStatisticsForEntity(entityId, domainId) {
+    return this.httpClient
+      .fetch(`/lookup-entities/${entityId}/history?domainId=${domainId}`)
+      .then(response => (response.json()));
+  }
+
   getDomainLookupEventSource(domainLookupId) {
     return new EventSource(
       `${environment.gatewayURL}/domain-lookups/${domainLookupId}/updates`);
