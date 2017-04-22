@@ -21,8 +21,7 @@ export class LookupDetail {
     this.registerDomainLookup = this.registerDomainLookup.bind(this);
   }
 
-  activate(params) {
-    const { lookupId } = params;
+  activate({ lookupId }) {
     this.isLoading = true;
     blockPage();
     this.api.fetchLookup(lookupId)

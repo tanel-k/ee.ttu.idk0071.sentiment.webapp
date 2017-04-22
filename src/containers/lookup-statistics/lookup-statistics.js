@@ -1,25 +1,20 @@
 import { inject } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
+import { DataAPI } from '../../gateways/data/data-api';
 import { DialogService } from 'aurelia-dialog';
 
-import { DataAPI } from '../../gateways/data/data-api';
 import { isEmpty } from '../../lib/utils';
 import { blockPage, releasePage } from '../../app-utils';
-import LookupSubmitted from './dialogs/lookup-submitted';
 import ErrorDialog from '../dialogs/error-dialog';
 
-import { MSG_NETWORK_ERR, MSG_SUBMISSION_ERR } from '../../consts/messages';
+import { MSG_NETWORK_ERR, MSG_SEARCH_ERR } from '../../consts/messages';
 
 @inject(DataAPI, Router, DialogService)
-export class LookupForm {
+export class LookupStatistics {
   constructor(api, router, dialogService) {
     this.api = api;
     this.router = router;
     this.dialogService = dialogService;
-
-    this.entityName = '';
-    this.domainIds = [];
-    this.regularSelectMode = false;
   }
 
   attached() {
@@ -38,33 +33,21 @@ export class LookupForm {
       });
   }
 
-  get canLookup() {
-    return !isEmpty(this.entityName)
-      && this.domainIds.length > 0;
-  }
-
-  performLookup() {
-    blockPage();
-    const { entityName, domainIds } = this;
-
-    this.api.postLookup({ entityName, domainIds })
-      .then(lookupResult => {
+  performSearch() {
+    this.api.fetchLookupStatistics(this.entityName, this.domainId)
+      .then(statisticsResult => {
         releasePage();
-        this.domainIds = [];
-        this.entityName = '';
-        this.openResultDialog({ lookupResult, entityName });
+        // TODO: wait for endpoint logic to be completed
       })
       .catch(err => {
         releasePage();
-        this.openErrorDialog(MSG_SUBMISSION_ERR);
+        this.openErrorDialog(MSG_SEARCH_ERR);
       });
   }
 
-  openResultDialog(model) {
-    this.dialogService.open({
-      viewModel: LookupSubmitted,
-      model: model
-    });
+  get canSearch() {
+    return !isEmpty(this.entityName)
+      && this.domainId > 0;
   }
 
   openErrorDialog(message) {
