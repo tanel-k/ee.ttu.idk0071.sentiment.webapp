@@ -93,6 +93,21 @@ export class LookupDetail {
       });
   }
 
+  restartDomainLookup(id) {
+    blockPage();
+    this.api.restartDomainLookup(id)
+      .then(domainLookup => {
+        releasePage();
+        this.completeDomainLookups = this.completeDomainLookups
+          .filter(d => d.id !== id);
+        this.registerDomainLookup(domainLookup);
+      })
+      .catch(err => {
+        releasePage();
+        this.openErrorDialog('An unknown error occurred while restarting');
+      });
+  }
+
   openErrorDialog(message) {
     this.dialogService.open({
       viewModel: ErrorDialog,

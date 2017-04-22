@@ -57,6 +57,12 @@ export class DataAPI {
       .then(response => (response.json()));
   }
 
+  restartDomainLookup(domainLookupId) {
+    return this.httpClient
+      .fetch(`/domain-lookups/${domainLookupId}/restart`, { method: 'POST' })
+      .then(response => response.json());
+  }
+
   getDomainLookupEventSource(domainLookupId) {
     return new EventSource(
       `${environment.gatewayURL}/domain-lookups/${domainLookupId}/updates`);
