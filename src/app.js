@@ -59,6 +59,7 @@ export class App {
           this.isSearching = false;
         })
         .catch((err) => {
+          console.log(err);
           this.isSearching = false;
         });
     }
