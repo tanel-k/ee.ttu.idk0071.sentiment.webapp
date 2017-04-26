@@ -34,10 +34,45 @@ export class LookupStatistics {
   }
 
   performSearch() {
-    this.api.fetchLookupStatistics(this.entityName, this.domainId)
+    if (!this.canSearch) {
+      return;
+    }
+
+    blockPage();
+    this.graphData = null;
+    this.searchTitle = null;
+    this.searchMessage = null;
+
+    this.api.fetchEntityResultsByName(this.entityName, this.domainId)
       .then(statisticsResult => {
         releasePage();
-        // TODO: wait for endpoint logic to be completed
+        if (statisticsResult.length > 2) {
+          const positivityPoints = statisticsResult.map(item => ({ y: item.positivityPercentage, x: new Date(item.date) }));
+          const negativityPoints = statisticsResult.map(item => ({ y: item.negativityPercentage, x: new Date(item.date) }));
+          const neutralityPoints = statisticsResult.map(item => ({ y: item.neutralityPercentage, x: new Date(item.date) }));
+          const graphConfig = {
+            title: '',
+            xConfig: {
+              type: 'time',
+              label: 'Time'
+            },
+            yConfig: {
+              label: '%'
+            }
+          };
+          this.graphData = {
+            dataSets: [
+              { label: 'Positivity', color: 'green', data: positivityPoints },
+              { label: 'Neutrality', color: 'yellow', data: neutralityPoints },
+              { label: 'Negativity', color: 'red', data: negativityPoints }
+            ],
+            config: graphConfig
+          };
+        } else {
+          this.searchMessage = 'Insufficient statistical data';
+        }
+
+        this.searchTitle = 'Statistics for ' + this.entityName;
       })
       .catch(err => {
         releasePage();

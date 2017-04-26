@@ -22,6 +22,12 @@ export class PieChart {
     this.chart = new Chart(this.canvas, { type, data });
   }
 
+  detached() {
+    if (this.chart) {
+      this.chart.destroy();
+    }
+  }
+
   mapDataItemsToChartData(dataItems) {
     const labels = dataItems.map(item => item.label);
     const data = dataItems.map(item => item.data);

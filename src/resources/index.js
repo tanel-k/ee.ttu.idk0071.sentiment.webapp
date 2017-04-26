@@ -5,6 +5,7 @@ export function configure(config) {
     './value-converters/order-by',
     './elements/graphs/pie-chart',
     './elements/graphs/line-chart',
-    './elements/form-elements/drag-drop-select'
+    './elements/form-elements/drag-drop-select',
+    './attributes/key-return'
   ]);
 }

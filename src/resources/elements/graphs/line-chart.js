@@ -7,54 +7,30 @@ import { typeMap } from './utils/chart-utils/axis-types';
 
 @inject(Element)
 export class LineChart {
-  @bindable width = '250';
+  @bindable widthPct = '100';
   @bindable height = '250';
-  @bindable items = [];
+  @bindable dataSets;
+  @bindable chartConfig;
 
   constructor(element) {
     this.element = element;
   }
 
   attached() {
-    const date = new Date();
-    const sampleData1 = { label: 'Positivity',  color: 'green', data: [
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), y: 20},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2), y: 30},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 3), y: 50},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 4), y: 10},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5), y: 30}
-    ]};
-    const sampleData2 = { label: 'Negativity', color: 'red', data: [
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), y: 40},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2), y: 30},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 3), y: 50},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 4), y: 20},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5), y: 40}
-    ]};
-    const sampleData3 = { label: 'Neutrality', color: 'yellow', data: [
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), y: 40},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2), y: 40},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 3), y: 0},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 4), y: 70},
-      {x: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5), y: 30}
-    ]};
-    const sampleConfig = {
-      title: 'Test',
-      color: 'red',
-      xConfig: {
-        type: 'time',
-        label: 'Time'
-      },
-      yConfig: {
-        label: '%'
-      }
-    };
-    const chartConfig = this.mapDataConfigToChartConfig([sampleData1, sampleData2, sampleData3], sampleConfig);
-    this.canvas = this.element.querySelector('.chart-canvas');
-    this.chart = new Chart(this.canvas, chartConfig);
+    if (this.dataSets && this.chartConfig) {
+      const chartConfig = this.mapDataConfigToChartConfig(this.dataSets, this.chartConfig);
+      this.canvas = this.element.querySelector('.chart-canvas');
+      this.chart = new Chart(this.canvas, chartConfig);
+    }
   }
 
-  mapDataConfigToChartConfig(dataItems, { title, color, xConfig, yConfig }) {
+  detached() {
+    if (this.chart) {
+      this.chart.destroy();
+    }
+  }
+
+  mapDataConfigToChartConfig(dataItems, { title, xConfig, yConfig }) {
     return {
       type: 'line',
       data: {
