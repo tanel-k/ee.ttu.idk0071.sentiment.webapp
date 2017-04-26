@@ -8,6 +8,7 @@ import { blockPage, releasePage } from '../../app-utils';
 import LookupSubmitted from './dialogs/lookup-submitted';
 import ErrorDialog from '../dialogs/error-dialog';
 
+import { EMAIL_REGEX } from '../../consts/validation-consts';
 import { MSG_NETWORK_ERR, MSG_SUBMISSION_ERR } from '../../consts/messages';
 
 @inject(DataAPI, Router, DialogService)
@@ -18,6 +19,7 @@ export class LookupForm {
     this.dialogService = dialogService;
 
     this.entityName = '';
+    this.email = '';
     this.domainIds = [];
     this.regularSelectMode = false;
   }
@@ -40,18 +42,24 @@ export class LookupForm {
 
   get canLookup() {
     return !isEmpty(this.entityName)
+      && this.isEmailValid
       && this.domainIds.length > 0;
+  }
+
+  get isEmailValid() {
+    return isValidEmail(this.email);
   }
 
   performLookup() {
     blockPage();
     const { entityName, domainIds } = this;
 
-    this.api.postLookup({ entityName, domainIds })
+    this.api.postLookup({ entityName, domainIds, email })
       .then(lookupResult => {
         releasePage();
         this.domainIds = [];
         this.entityName = '';
+        this.email = '';
         this.openResultDialog({ lookupResult, entityName });
       })
       .catch(err => {
@@ -74,3 +82,5 @@ export class LookupForm {
     });
   }
 }
+
+const isValidEmail = (email) => (isEmpty(email) || EMAIL_REGEX.test(email));

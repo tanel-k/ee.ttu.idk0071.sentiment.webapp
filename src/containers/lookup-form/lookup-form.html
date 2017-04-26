@@ -1,4 +1,5 @@
 <template>
+  <require from="./lookup-form.css"></require>
   <div class="row">
     <div class="col-md-12">
       <h1>Submit a lookup request</h1>
@@ -8,13 +9,19 @@
     <div class="col-md-12">
       <form>
         <fieldset class="form-group">
-          <div class="form-group">
+          <div class="form-group required">
             <label class="control-label">Keyword</label>
             <input value.bind="entityName" class="form-control">
             <small></small>
           </div>
-          <div class="form-group">
-            <label class="control-label">Lookup domains</label>
+          <div class="form-group ${!isEmailValid ? 'has-error' : ''}">
+            <label class="control-label">E-mail</label>
+            <input value.bind="email" class="form-control">
+            <span if.bind="!isEmailValid" class="help-block">This is not a valid e-mail</span>
+            <small>Insert your e-mail in order to be notified when the lookup completes (optional)</small>
+          </div>
+          <div class="form-group required">
+            <label class="control-label">Search domains</label>
             <select if.bind="regularSelectMode" class="form-control" multiple value.bind="domainIds">
               <option repeat.for="domainOption of domainOptions" value="${domainOption.value}">
                 ${domainOption.label}
