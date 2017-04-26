@@ -52,7 +52,7 @@ export class LookupForm {
 
   performLookup() {
     blockPage();
-    const { entityName, domainIds } = this;
+    const { entityName, domainIds, email } = this;
 
     this.api.postLookup({ entityName, domainIds, email })
       .then(lookupResult => {
