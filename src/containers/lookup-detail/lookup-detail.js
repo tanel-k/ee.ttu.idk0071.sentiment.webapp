@@ -5,6 +5,7 @@ import { DialogService } from 'aurelia-dialog';
 
 import { blockPage, releasePage } from '../../app-utils';
 import ErrorDialog from '../dialogs/error-dialog';
+import StatisticsDialog from './dialogs/statistics-dialog';
 
 const STATE_COMPLETE = 'Complete';
 const STATE_ERROR = 'Error';
@@ -90,6 +91,54 @@ export class LookupDetail {
         this.completeDomainLookups.unshift(
           extendCompleteDomainLookup(flattenDomainLookup(cpltDomainLookup))
         );
+      });
+  }
+
+  showStatistics(domainLookup) {
+    const { domain } = domainLookup;
+    const { lookupEntity } = this.lookupData;
+    const title = `${lookupEntity.name} statistics on ${domain.name}`;
+
+    this.api.fetchEntityResultsById(lookupEntity.id, domain.code)
+      .then(statisticsResult => {
+        releasePage();
+        let graphData = null;
+        let message = null;
+
+        if (statisticsResult.length > 2) {
+          const positivityPoints = statisticsResult.map(item => ({ y: item.positivityPercentage, x: new Date(item.date) }));
+          const negativityPoints = statisticsResult.map(item => ({ y: item.negativityPercentage, x: new Date(item.date) }));
+          const neutralityPoints = statisticsResult.map(item => ({ y: item.neutralityPercentage, x: new Date(item.date) }));
+          const graphConfig = {
+            title: '',
+            xConfig: {
+              type: 'time',
+              label: 'Time'
+            },
+            yConfig: {
+              label: '%'
+            }
+          };
+          graphData = {
+            dataSets: [
+              { label: 'Positivity', color: 'green', data: positivityPoints },
+              { label: 'Neutrality', color: 'yellow', data: neutralityPoints },
+              { label: 'Negativity', color: 'red', data: negativityPoints }
+            ],
+            config: graphConfig
+          };
+        } else {
+          message = 'Insufficient statistical data';
+        }
+
+        this.dialogService.open({
+          viewModel: StatisticsDialog,
+          model: { graphData, message, title }
+        });
+      })
+      .catch(err => {
+        releasePage();
+        this.openErrorDialog('An error occurred while retrieving statistics');
       });
   }
 
