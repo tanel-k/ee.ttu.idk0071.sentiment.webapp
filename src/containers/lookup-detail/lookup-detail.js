@@ -17,13 +17,15 @@ export class LookupDetail {
     this.router = router;
     this.dialogService = dialogService;
 
-    this.completeDomainLookups = [];
-    this.incompleteDomainLookups = [];
     this.registerDomainLookup = this.registerDomainLookup.bind(this);
   }
 
   activate({ lookupId }) {
     this.isLoading = true;
+    this.lookupData = null;
+    this.incompleteDomainLookups = [];
+    this.completeDomainLookups = [];
+
     blockPage();
     this.api.fetchLookup(lookupId)
       .then(lookupData => {
