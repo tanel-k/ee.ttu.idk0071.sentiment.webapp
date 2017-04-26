@@ -62,17 +62,17 @@ export class LookupStatistics {
           };
           this.graphData = {
             dataSets: [
-              { label: 'Positivity', color: 'green', data: positivityPoints },
-              { label: 'Neutrality', color: 'yellow', data: neutralityPoints },
-              { label: 'Negativity', color: 'red', data: negativityPoints }
+              { label: 'Positivity %', color: 'green', data: positivityPoints },
+              { label: 'Neutrality %', color: 'yellow', data: neutralityPoints },
+              { label: 'Negativity %', color: 'red', data: negativityPoints }
             ],
             config: graphConfig
           };
         } else {
-          this.searchMessage = 'Insufficient statistical data';
+          this.searchMessage = 'Insufficient historic data';
         }
 
-        this.searchTitle = 'Statistics for ' + this.entityName;
+        this.searchTitle = 'Historic sentiment data for ' + this.entityName;
       })
       .catch(err => {
         releasePage();

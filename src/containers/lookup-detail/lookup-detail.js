@@ -5,7 +5,7 @@ import { DialogService } from 'aurelia-dialog';
 
 import { blockPage, releasePage } from '../../app-utils';
 import ErrorDialog from '../dialogs/error-dialog';
-import StatisticsDialog from './dialogs/statistics-dialog';
+import HistoryDialog from './dialogs/history-dialog';
 
 const STATE_COMPLETE = 'Complete';
 const STATE_ERROR = 'Error';
@@ -94,10 +94,10 @@ export class LookupDetail {
       });
   }
 
-  showStatistics(domainLookup) {
+  showHistory(domainLookup) {
     const { domain } = domainLookup;
     const { lookupEntity } = this.lookupData;
-    const title = `${lookupEntity.name} statistics on ${domain.name}`;
+    const title = `Sentiment history for '${lookupEntity.name}' on ${domain.name}`;
 
     this.api.fetchEntityResultsById(lookupEntity.id, domain.code)
       .then(statisticsResult => {
@@ -121,24 +121,24 @@ export class LookupDetail {
           };
           graphData = {
             dataSets: [
-              { label: 'Positivity', color: 'green', data: positivityPoints },
-              { label: 'Neutrality', color: 'yellow', data: neutralityPoints },
-              { label: 'Negativity', color: 'red', data: negativityPoints }
+              { label: 'Positivity %', color: 'green', data: positivityPoints },
+              { label: 'Neutrality %', color: 'yellow', data: neutralityPoints },
+              { label: 'Negativity %', color: 'red', data: negativityPoints }
             ],
             config: graphConfig
           };
         } else {
-          message = 'Insufficient statistical data';
+          message = 'Insufficient historic data';
         }
 
         this.dialogService.open({
-          viewModel: StatisticsDialog,
+          viewModel: HistoryDialog,
           model: { graphData, message, title }
         });
       })
       .catch(err => {
         releasePage();
-        this.openErrorDialog('An error occurred while retrieving statistics');
+        this.openErrorDialog('An error occurred while retrieving historic data');
       });
   }
 

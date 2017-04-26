@@ -47,7 +47,7 @@
                       <div>Negative sources: <strong>${domainLookup.negativeCount}</strong></div>
                     </div>
                   </div>
-                  <div><button class="btn btn-link" click.delegate="showStatistics(domainLookup)">Statistics</button></div>
+                  <div><button class="btn btn-link" click.delegate="showHistory(domainLookup)">History</button></div>
                 </div>
                 <div class="${hasIncompleteLookups ? 'col-md-12' : 'col-md-6'}">
                   <pie-chart items.bind="domainLookup.chartDataItems" width="325" height="300"></pie-chart>
@@ -56,7 +56,7 @@
             </div>
             <div if.bind="domainLookup.isError === true">
               <p>An error occurred while processing this lookup.
-                <button class="btn btn-link" click.delegate="restartDomainLookup(domainLookup.id)">Restart</button>
+                <button class="btn btn-link" click.delegate="restartDomainLookup(domainLookup.id)">Retry</button>
               </p>
             </div>
           </div>

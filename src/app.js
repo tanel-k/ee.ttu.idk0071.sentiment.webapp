@@ -33,11 +33,11 @@ export class App {
         moduleId: 'containers/lookup-detail/lookup-detail'
       },
       {
-        route: 'statistics',
-        name: 'lookup-statistics',
-        title: 'Lookup statistics',
+        route: 'history',
+        name: 'lookup-history',
+        title: 'Archived data',
         nav: true,
-        moduleId: 'containers/lookup-statistics/lookup-statistics'
+        moduleId: 'containers/lookup-history/lookup-history'
       },
       {
         route: 'not-found',
