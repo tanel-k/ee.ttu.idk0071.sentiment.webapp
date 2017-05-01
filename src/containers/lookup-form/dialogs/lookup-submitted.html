@@ -3,9 +3,9 @@
     <ai-dialog-header>
       <h4>Lookup submitted!</h4>
     </ai-dialog-header>
-    <ai-dialog-body>
-      <p>Your lookup for <strong>${entityName}</strong> has been assigned the code <strong>${lookupResult.lookupId}</strong>.</p>
-      <p><a target="_blank" route-href="route: lookup-detail; params.bind: {lookupId:lookupResult.lookupId}">Click here</a> to view the lookup as it is being processed.</p>
+    <ai-dialog-body gui-id="lookup-submission-dialog">
+      <p>Your lookup for <strong>${entityName}</strong> has been assigned the code <strong gui-id="lookup-id-presenter">${lookupResult.lookupId}</strong>.</p>
+      <p><a target="_blank" gui-id="lookup-detail-link" route-href="route: lookup-detail; params.bind: {lookupId:lookupResult.lookupId}">Click here</a> to view the lookup as it is being processed.</p>
     </ai-dialog-body>
     <ai-dialog-footer>
       <button class="btn btn-warning" click.trigger="close()">Close</button>

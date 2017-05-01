@@ -75,8 +75,14 @@ export class LookupStatistics {
         this.searchTitle = 'Historic sentiment data for ' + this.entityName;
       })
       .catch(err => {
+        if (err.status && err.status === 404) {
+          this.searchTitle = 'Historic sentiment data for ' + this.entityName;
+          this.searchMessage = 'No historic data found';
+        } else {
+          this.openErrorDialog(MSG_SEARCH_ERR);
+        }
+
         releasePage();
-        this.openErrorDialog(MSG_SEARCH_ERR);
       });
   }
 
