@@ -21,7 +21,7 @@ export class LookupForm {
     this.entityName = '';
     this.email = '';
     this.domainIds = [];
-    this.regularSelectMode = false;
+    this.regularSelectMode = true;
   }
 
   attached() {

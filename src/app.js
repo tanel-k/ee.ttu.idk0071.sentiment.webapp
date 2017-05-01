@@ -35,7 +35,7 @@ export class App {
       {
         route: 'history',
         name: 'lookup-history',
-        title: 'Archived data',
+        title: 'Historic data',
         nav: true,
         moduleId: 'containers/lookup-history/lookup-history'
       },

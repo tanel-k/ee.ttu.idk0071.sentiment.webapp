@@ -5,21 +5,22 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" gui-id="lookup-history-container">
     <div class="col-md-12">
       <div class="input-group">
         <span class="input-group-addon" title="* Keyword">Keyword</span>
-        <input key-return.call="performSearch()" class="form-control" type="text" value.bind="entityName">
+        <input gui-id="keyword-input" key-return.call="performSearch()" class="form-control" type="text" value.bind="entityName">
 
         <span class="input-group-addon" title="* Keyword">Domain</span>
-        <select class="form-control" value.bind="domainId">
+        <select class="form-control" value.bind="domainId" gui-id="domain-select">
+          <option></option>
           <option repeat.for="domainOption of domainOptions" value="${domainOption.value}">
             ${domainOption.label}
           </option>
         </select>
 
         <span class="input-group-btn">
-          <button click.trigger="performSearch()" disabled.bind="!canSearch" class="btn btn-primary">Search</button>
+          <button click.trigger="performSearch()" gui-id="btn-search" disabled.bind="!canSearch" class="btn btn-primary">Search</button>
         </span>
       </div>
     </div>
