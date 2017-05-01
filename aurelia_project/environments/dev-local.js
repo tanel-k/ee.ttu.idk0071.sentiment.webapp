@@ -1,5 +1,5 @@
 export default {
   debug: true,
-  testing: true,
+  testing: false,
   gatewayURL: 'http://localhost:8080'
 };

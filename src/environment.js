@@ -1,5 +1,5 @@
 export default {
   debug: true,
-  testing: true,
+  testing: false,
   gatewayURL: 'https://dev-sentiment-service.cfapps.io'
 };
