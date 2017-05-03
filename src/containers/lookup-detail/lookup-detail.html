@@ -19,6 +19,7 @@
           <div class="panel-body">
             <p if.bind="domainLookup.currStateName === 'In progress'">This lookup is being processed</p>
             <p if.bind="domainLookup.currStateName === 'Queued'">This lookup is waiting for a processor</p>
+            <countdown-timer seconds.bind="domainLookup.initialSecondsLeft"></countdown-timer>
           </div>
         </div>
       </div>

@@ -62,7 +62,10 @@ export class LookupDetail {
       return;
     }
 
-    this.incompleteDomainLookups.push(flattenDomainLookup((domainLookup)));
+    const flattenedDomainLookup = flattenDomainLookup(domainLookup);
+    const initialSecondsLeft = domainLookup.domain.averageDurationMinutes * 60 - (new Date().getTime() - domainLookup.submittedDate) / 1000;
+    Object.assign(flattenedDomainLookup, { initialSecondsLeft });
+    this.incompleteDomainLookups.push(flattenedDomainLookup);
 
     const eventSource = this.api.getDomainLookupEventSource(id);
     eventSource.onerror = (error) => {
