@@ -36,6 +36,7 @@
             ></drag-drop-select>
             <small class="no-user-select">
               <span if.bind="durationString">Estimated wait time: <strong>${durationString}</strong></span><br/>
+              <span if.bind="!durationString">Estimated wait time: <strong>unknown</strong></span><br/>
               <span if.bind="!regularSelectMode">Drag and drop to select.</span><br/>
               <span if.bind="!regularSelectMode">Press and hold the <em>Ctrl</em> key to select more than one domain</span>
             </small>

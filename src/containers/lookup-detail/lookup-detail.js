@@ -63,7 +63,13 @@ export class LookupDetail {
     }
 
     const flattenedDomainLookup = flattenDomainLookup(domainLookup);
-    const initialSecondsLeft = domainLookup.domain.averageDurationMinutes * 60 - (new Date().getTime() - domainLookup.submittedDate) / 1000;
+    let initialSecondsLeft;
+    if (domainLookup.domain.averageDurationSeconds !== null) {
+      initialSecondsLeft = domainLookup.domain.averageDurationSeconds - (new Date().getTime() - domainLookup.submittedDate) / 1000;
+    } else {
+      initialSecondsLeft = null;
+    }
+
     Object.assign(flattenedDomainLookup, { initialSecondsLeft });
     this.incompleteDomainLookups.push(flattenedDomainLookup);
 

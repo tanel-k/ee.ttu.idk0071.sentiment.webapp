@@ -36,9 +36,9 @@ export class LookupForm {
           value: d.code
         }));
 
-        this.averageDurationMinutesMap = {};
+        this.averageDurationSecondsMap = {};
         domains.forEach(d => {
-          Object.assign(this.averageDurationMinutesMap, { [d.code]: d.averageDurationMinutes});
+          Object.assign(this.averageDurationSecondsMap, { [d.code]: d.averageDurationSeconds});
         });
       })
       .catch((err) => {
@@ -82,13 +82,13 @@ export class LookupForm {
       return;
     }
 
-    const estimatedDurationMinutes = this.domainIds
-      .map(domainId => this.averageDurationMinutesMap[domainId])
+    const averageDurationSeconds = this.domainIds
+      .map(domainId => this.averageDurationSecondsMap[domainId])
       .reduce((prev, curr) => (Math.max(prev, curr)), null);
-    if (!estimatedDurationMinutes) {
-      this.durationString = 'unknown';
+    if (!averageDurationSeconds) {
+      this.durationString = null;
     } else {
-      this.durationString = formatSeconds(estimatedDurationMinutes * 60);
+      this.durationString = formatSeconds(averageDurationSeconds);
     }
   }
 
