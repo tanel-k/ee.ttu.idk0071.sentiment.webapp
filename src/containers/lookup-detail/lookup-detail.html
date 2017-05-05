@@ -1,4 +1,5 @@
 <template>
+  <require from="./lookup-detail.css"></require>
   <div class="snapshot-report" if.bind="!isLoading" gui-id="lookup-detail-container">
     <div class="row">
       <div class="col-md-12">
@@ -19,6 +20,13 @@
           <div class="panel-body">
             <p if.bind="domainLookup.currStateName === 'In progress'">This lookup is being processed</p>
             <p if.bind="domainLookup.currStateName === 'Queued'">This lookup is waiting for a processor</p>
+            <countdown-timer class-names="timer-text" 
+              if.bind="domainLookup.initialSecondsLeft !== null"
+              seconds.bind="domainLookup.initialSecondsLeft"
+              descriptor-when-waiting="Estimated time left: "
+              descriptor-when-overdue="Overdue time: "
+            ></countdown-timer>
+            <p class="timer-text" if.bind="domainLookup.initialSecondsLeft === null">Time left: unknown</p>
           </div>
         </div>
       </div>

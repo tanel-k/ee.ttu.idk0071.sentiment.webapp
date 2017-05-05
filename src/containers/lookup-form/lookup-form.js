@@ -8,6 +8,8 @@ import { blockPage, releasePage } from '../../app-utils';
 import LookupSubmitted from './dialogs/lookup-submitted';
 import ErrorDialog from '../dialogs/error-dialog';
 
+import { formatSeconds } from '../../lib/time-utils';
+
 import { EMAIL_REGEX } from '../../consts/validation-consts';
 import { MSG_NETWORK_ERR, MSG_SUBMISSION_ERR } from '../../consts/messages';
 
@@ -33,6 +35,11 @@ export class LookupForm {
           label: d.name,
           value: d.code
         }));
+
+        this.averageDurationSecondsMap = {};
+        domains.forEach(d => {
+          Object.assign(this.averageDurationSecondsMap, { [d.code]: d.averageDurationSeconds});
+        });
       })
       .catch((err) => {
         releasePage();
@@ -52,7 +59,7 @@ export class LookupForm {
 
   performLookup() {
     blockPage();
-    const { entityName, domainIds, email } = this;
+    const { entityName, domainIds, email, durationString } = this;
 
     this.api.postLookup({ entityName, domainIds, email })
       .then(lookupResult => {
@@ -60,12 +67,29 @@ export class LookupForm {
         this.domainIds = [];
         this.entityName = '';
         this.email = '';
-        this.openResultDialog({ lookupResult, entityName });
+        this.durationString = null;
+        this.openResultDialog({ lookupResult, entityName, durationString });
       })
       .catch(err => {
         releasePage();
         this.openErrorDialog(MSG_SUBMISSION_ERR);
       });
+  }
+
+  handleDomainSelectionChanged() {
+    if (!this.domainIds.length) {
+      this.durationString = null;
+      return;
+    }
+
+    const averageDurationSeconds = this.domainIds
+      .map(domainId => this.averageDurationSecondsMap[domainId])
+      .reduce((prev, curr) => (Math.max(prev, curr)), null);
+    if (!averageDurationSeconds) {
+      this.durationString = null;
+    } else {
+      this.durationString = formatSeconds(averageDurationSeconds);
+    }
   }
 
   openResultDialog(model) {

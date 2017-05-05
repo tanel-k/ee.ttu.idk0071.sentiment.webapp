@@ -11,9 +11,10 @@ export default class LookupSubmitted {
     this.router = router;
   }
 
-  activate({ lookupResult, entityName }) {
+  activate({ lookupResult, entityName, durationString }) {
     this.lookupResult = lookupResult;
     this.entityName = entityName;
+    this.durationString = durationString;
   }
 
   openDetailPage() {

@@ -5,6 +5,8 @@
     </ai-dialog-header>
     <ai-dialog-body gui-id="lookup-submission-dialog">
       <p>Your lookup for <strong>${entityName}</strong> has been assigned the code <strong gui-id="lookup-id-presenter">${lookupResult.lookupId}</strong>.</p>
+      <p if.bind="durationString">Processing will take about ${durationString}.</p>
+      <p if.bind="!durationString">Processing will take at least 1 minute.</p>
       <p><a target="_blank" gui-id="lookup-detail-link" route-href="route: lookup-detail; params.bind: {lookupId:lookupResult.lookupId}">Click here</a> to view the lookup as it is being processed.</p>
     </ai-dialog-body>
     <ai-dialog-footer>

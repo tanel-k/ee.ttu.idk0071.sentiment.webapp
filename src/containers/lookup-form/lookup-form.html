@@ -22,7 +22,7 @@
           </div>
           <div class="form-group required">
             <label class="control-label">Search domains</label>
-            <select if.bind="regularSelectMode" gui-id="domain-select" class="form-control" multiple value.bind="domainIds">
+            <select if.bind="regularSelectMode" change.delegate="handleDomainSelectionChanged()" gui-id="domain-select" class="form-control" multiple value.bind="domainIds">
               <option repeat.for="domainOption of domainOptions" value="${domainOption.value}">
                 ${domainOption.label}
               </option>
@@ -34,7 +34,12 @@
               selected-title="Selected"
               value.bind="domainIds"
             ></drag-drop-select>
-            <small class="no-user-select">Drag and drop to select.<br/>Press and hold the <em>Ctrl</em> key to select more than one domain</small>
+            <small class="no-user-select">
+              <span if.bind="durationString">Estimated wait time: <strong>${durationString}</strong><br/></span>
+              <span if.bind="!durationString">Estimated wait time: <strong>unknown</strong><br/></span>
+              <span if.bind="!regularSelectMode">Drag and drop to select.<br/></span>
+              <span if.bind="!regularSelectMode">Press and hold the <em>Ctrl</em> key to select more than one domain</span>
+            </small>
           </div>
         </fieldset>
         <button click.trigger="performLookup()" gui-id="btn-perform-lookup" class="btn btn-block btn-primary" disabled.bind="!canLookup">Perform lookup</button>

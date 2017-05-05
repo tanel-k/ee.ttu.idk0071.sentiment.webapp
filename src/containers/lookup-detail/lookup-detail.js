@@ -62,7 +62,16 @@ export class LookupDetail {
       return;
     }
 
-    this.incompleteDomainLookups.push(flattenDomainLookup((domainLookup)));
+    const flattenedDomainLookup = flattenDomainLookup(domainLookup);
+    let initialSecondsLeft;
+    if (domainLookup.domain.averageDurationSeconds !== null) {
+      initialSecondsLeft = domainLookup.domain.averageDurationSeconds - (new Date().getTime() - domainLookup.submittedDate) / 1000;
+    } else {
+      initialSecondsLeft = null;
+    }
+
+    Object.assign(flattenedDomainLookup, { initialSecondsLeft });
+    this.incompleteDomainLookups.push(flattenedDomainLookup);
 
     const eventSource = this.api.getDomainLookupEventSource(id);
     eventSource.onerror = (error) => {
