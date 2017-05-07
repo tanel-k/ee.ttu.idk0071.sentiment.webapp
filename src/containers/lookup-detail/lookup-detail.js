@@ -110,7 +110,7 @@ export class LookupDetail {
     const { lookupEntity } = this.lookupData;
     const title = `Sentiment history for '${lookupEntity.name}' on ${domain.name}`;
 
-    this.api.fetchEntityResultsById(lookupEntity.id, domain.code)
+    this.api.fetchEntityHistoryById(lookupEntity.id, domain.code)
       .then(statisticsResult => {
         releasePage();
         let graphData = null;

@@ -45,15 +45,15 @@ export class DataAPI {
       .then(response => (response.json()));
   }
 
-  fetchEntityResultsByName(entityName, domainId) {
+  fetchEntityHistoryByName(entityName, domainId) {
     return this.httpClient
-      .fetch(`/lookup-entities/results?entityName=${entityName}&domainId=${domainId}`)
+      .fetch(`/lookup-entities/history?entityName=${entityName}&domainId=${domainId}`)
       .then(response => (response.json()));
   }
 
-  fetchEntityResultsById(entityId, domainId) {
+  fetchEntityHistoryById(entityId, domainId) {
     return this.httpClient
-      .fetch(`/lookup-entities/${entityId}/results?domainId=${domainId}`)
+      .fetch(`/lookup-entities/${entityId}/history?domainId=${domainId}`)
       .then(response => (response.json()));
   }
 

@@ -6,6 +6,7 @@ export function configure(config) {
     './elements/graphs/pie-chart',
     './elements/graphs/line-chart',
     './elements/form-elements/drag-drop-select',
+    './elements/form-elements/date-picker',
     './elements/utility-elements/countdown-timer',
     './attributes/key-return'
   ]);

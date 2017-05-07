@@ -160,6 +160,15 @@
               "resources": [
                   "css/bootstrap.css"
               ]
+            },
+            {
+              "name": "bootstrap-datepicker",
+              "path": "../node_modules/bootstrap-datepicker/dist",
+              "main": "js/bootstrap-datepicker.min",
+              "deps": ["bootstrap"],
+              "resources": [
+                "css/bootstrap-datepicker.standalone.css"
+              ]
             }
         ]
       }

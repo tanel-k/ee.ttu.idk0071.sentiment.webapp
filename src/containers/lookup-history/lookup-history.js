@@ -43,7 +43,7 @@ export class LookupStatistics {
     this.searchTitle = null;
     this.searchMessage = null;
 
-    this.api.fetchEntityResultsByName(this.entityName, this.domainId)
+    this.api.fetchEntityHistoryByName(this.entityName, this.domainId)
       .then(statisticsResult => {
         releasePage();
         if (statisticsResult.length > 2) {
