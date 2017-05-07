@@ -45,15 +45,19 @@ export class DataAPI {
       .then(response => (response.json()));
   }
 
-  fetchEntityHistoryByName(entityName, domainId) {
+  fetchEntityHistoryByName(entityName, domainId, rangeStart, rangeEnd) {
+    const dateRangeParams = (rangeStart ? `&rangeStart=${rangeStart}` : '')
+        + (rangeEnd ? `&rangeEnd=${rangeEnd}` : '');
     return this.httpClient
-      .fetch(`/lookup-entities/history?entityName=${entityName}&domainId=${domainId}`)
+      .fetch(`/lookup-entities/history?entityName=${entityName}&domainId=${domainId}${dateRangeParams}`)
       .then(response => (response.json()));
   }
 
-  fetchEntityHistoryById(entityId, domainId) {
+  fetchEntityHistoryById(entityId, domainId, rangeStart, rangeEnd) {
+    const dateRangeParams = (rangeStart ? `&rangeStart=${rangeStart}` : '')
+        + (rangeEnd ? `&rangeEnd=${rangeEnd}` : '');
     return this.httpClient
-      .fetch(`/lookup-entities/${entityId}/history?domainId=${domainId}`)
+      .fetch(`/lookup-entities/${entityId}/history?domainId=${domainId}${dateRangeParams}`)
       .then(response => (response.json()));
   }
 

@@ -3,6 +3,9 @@ import { Router } from 'aurelia-router';
 import { DataAPI } from '../../gateways/data/data-api';
 import { DialogService } from 'aurelia-dialog';
 
+import moment from 'moment';
+
+import { US_MOMENT_DATE_FORMAT } from '../../lib/date-utils';
 import { blockPage, releasePage } from '../../app-utils';
 import ErrorDialog from '../dialogs/error-dialog';
 import HistoryDialog from './dialogs/history-dialog';
@@ -109,8 +112,11 @@ export class LookupDetail {
     const { domain } = domainLookup;
     const { lookupEntity } = this.lookupData;
     const title = `Sentiment history for '${lookupEntity.name}' on ${domain.name}`;
+    const rangeStart = new moment().subtract(1, 'month').format(US_MOMENT_DATE_FORMAT);
+    const rangeEnd = new moment().format(US_MOMENT_DATE_FORMAT);
+    const subtitle = `(${rangeStart} - ${rangeEnd})`;
 
-    this.api.fetchEntityHistoryById(lookupEntity.id, domain.code)
+    this.api.fetchEntityHistoryById(lookupEntity.id, domain.code, rangeStart, rangeEnd)
       .then(statisticsResult => {
         releasePage();
         let graphData = null;
@@ -144,7 +150,7 @@ export class LookupDetail {
 
         this.dialogService.open({
           viewModel: HistoryDialog,
-          model: { graphData, message, title }
+          model: { graphData, message, title, subtitle }
         });
       })
       .catch(err => {

@@ -5,12 +5,13 @@ import 'bootstrap';
 import 'bootstrap-datepicker';
 
 @inject(Element)
-export class Datepicker {
+export class DatePicker {
   @bindable({ defaultBindingMode: bindingMode.twoWay }) value;
   @bindable({ defaultBindingMode: bindingMode.oneWay }) guid = '';
   @bindable({ defaultBindingMode: bindingMode.oneWay }) title = '';
-  @bindable({ defaultBindingMode: bindingMode.oneWay }) format = 'dd.mm.yyyy';
+  @bindable({ defaultBindingMode: bindingMode.oneWay }) format = 'dd/mm/yyyy';
   @bindable({ defaultBindingMode: bindingMode.oneWay }) start;
+  @bindable({ defaultBindingMode: bindingMode.oneWay }) errorMessage = '';
 
   constructor(element) {
     this.element = element;
@@ -21,7 +22,6 @@ export class Datepicker {
       format: this.format,
       clearBtn: true,
       title: this.title,
-      endDate: new Date(),
       autoclose: true,
       forceParse: false,
       showOnFocus: false,
@@ -37,19 +37,24 @@ export class Datepicker {
 
     this.datepicker = $(this.input)
       .datepicker(defaults)
-      .on('focus', e => applyGlow(this.button))
-      .on('focusout', e => removeGlow(this.button))
       .on('change', e => {
         _this.value = e.target.value;
       })
+      .on('click', e => {
+        this.show();
+      })
       .on('changeDate', e => {
-        // _this.datepicker.hide();
+        this.hide();
       })
       .data('datepicker');
   }
 
   show() {
     this.datepicker.show();
+  }
+
+  hide() {
+    this.datepicker.hide();
   }
 
   detached() {

@@ -1,19 +1,18 @@
 <template>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12">
       <h1>View historic sentiment data</h1>
     </div>
   </div>
 
   <div class="row" gui-id="lookup-history-container">
-    <div class="col-md-12">
+    <div class="col-sm-12">
       <div class="input-group">
         <span class="input-group-addon" title="* Keyword">Keyword</span>
         <input gui-id="keyword-input" key-return.call="performSearch()" class="form-control" type="text" value.bind="entityName">
 
         <span class="input-group-addon" title="* Keyword">Domain</span>
         <select class="form-control" value.bind="domainId" gui-id="domain-select">
-          <option></option>
           <option repeat.for="domainOption of domainOptions" value="${domainOption.value}">
             ${domainOption.label}
           </option>
@@ -25,10 +24,40 @@
       </div>
     </div>
   </div>
-  <hr/>
+
+  <button 
+    style="padding-left: 0;"
+    class="btn btn-link"
+    click.delegate="handleSearchRefineClick()" 
+    data-toggle="collapse"
+    data-target="#specify-dates">Specify date range <i class="${isSpecifyDateMode ? 'fa fa-angle-double-down' : 'fa fa-angle-double-right'}"></i></button>
+
+  <div class="row collapse" id="specify-dates">
+    <div class="col-sm-6">
+        <date-picker
+            start="days"
+            format="dd/mm/yyyy"
+            title="Start date"
+            value.bind="fromDate"
+            error-message.bind="fromDateErrorMsg">
+        </date-picker>
+    </div>
+    <div class="col-sm-6">
+        <date-picker
+            start="days"
+            format="dd/mm/yyyy"
+            title="End date"
+            value.bind="toDate"
+            error-message.bind="toDateErrorMsg">
+        </date-picker>
+    </div>
+  </div>
+
+  <hr>
+
   <div class="row">
-    <div class="col-md-12">
-      <h3 if.bind="searchTitle">${searchTitle}</h3>
+    <div class="col-sm-12">
+      <h3 if.bind="searchTitle">${searchTitle} <small>${rangeLabel}</small></h3>
       <p if.bind="searchMessage">${searchMessage}</p>
       <line-chart if.bind="graphData" 
         data-sets.bind="graphData.dataSets"

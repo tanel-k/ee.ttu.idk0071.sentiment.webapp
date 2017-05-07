@@ -1,6 +1,10 @@
 <template>
-	<div class="input-group">
-		<input class="form-control" type="text" value.bind="value">
+	<require from="bootstrap-datepicker/css/bootstrap-datepicker.standalone.css"></require>
+	<require from="./date-picker.css"></require>
+	<div class="input-group ${errorMessage ? 'has-error' : ''}">
+		<span class="input-group-addon" title="* ${title}">${title}</span>
+		<input class="form-control" type="text" placeholder="${format}" value.bind="value">
 		<span click.delegate="show()" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span></span>
 	</div>
+	<span if.bind="errorMessage" class="help-block-error">${errorMessage}</span>
 </template>

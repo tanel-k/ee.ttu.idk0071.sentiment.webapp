@@ -7,9 +7,10 @@ export default class HistoryDialog {
     this.controller = controller;
   }
 
-  activate({ graphData, title, message }) {
+  activate({ graphData, title, subtitle, message }) {
     this.graphData = graphData;
     this.message = message;
+    this.subtitle = subtitle;
     this.title = title;
   }
 

@@ -118,6 +118,7 @@
             "aurelia-templating",
             "aurelia-templating-binding",
             "text",
+            "moment",
             {
               "name": "aurelia-templating-resources",
               "path": "../node_modules/aurelia-templating-resources/dist/amd",
@@ -172,6 +173,11 @@
             }
         ]
       }
-    ]
+    ],
+    "copyFiles": {
+		  "node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2": "fonts",
+		  "node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff": "fonts",
+		  "node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf": "fonts"
+	  }
   }
 }
