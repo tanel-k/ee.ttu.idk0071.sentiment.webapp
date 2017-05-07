@@ -55,7 +55,7 @@
                       <div>Negative sources: <strong>${domainLookup.negativeCount}</strong></div>
                     </div>
                   </div>
-                  <div><button class="btn btn-link" click.delegate="showHistory(domainLookup)">History</button></div>
+                  <div><button class="btn btn-link" click.delegate="showHistory(domainLookup)">Recent history</button></div>
                 </div>
                 <div class="${hasIncompleteLookups ? 'col-md-12' : 'col-md-6'}">
                   <pie-chart items.bind="domainLookup.chartDataItems" width="325" height="300"></pie-chart>
