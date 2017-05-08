@@ -143,7 +143,7 @@ export class LookupStatistics {
       const toDate = moment(this.toDate, US_MOMENT_DATE_FORMAT);
       if (toDate.diff(fromDate) < 0) {
         this.toDateValid = false;
-        this.toDateErrorMsg = 'End date should not occur prior to start date';
+        this.toDateErrorMsg = 'End date should not precede to start date';
         datesValid = false;
       }
     }
