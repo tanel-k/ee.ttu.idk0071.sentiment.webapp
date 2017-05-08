@@ -1,5 +1,5 @@
 export default {
   debug: true,
   testing: false,
-  gatewayURL: 'http://localhost:8080'
+  gatewayURL: 'https://dev-sentiment-service.cfapps.io'
 };

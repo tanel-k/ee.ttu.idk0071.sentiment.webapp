@@ -47,6 +47,11 @@ ai-dialog-overlay.active {
   opacity: .5;
 }
 
+ux-dialog-overlay.active {
+  background-color: black;
+  opacity: .5;
+}
+
 pie-chart > .au-target {
   margin: 0 auto;
 }
