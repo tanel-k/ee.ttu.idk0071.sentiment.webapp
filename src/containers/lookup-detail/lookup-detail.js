@@ -180,6 +180,10 @@ export class LookupDetail {
       model: { message }
     });
   }
+
+  getUSDate(dateMillis) {
+    return new moment(dateMillis).format(US_MOMENT_DATE_FORMAT);
+  }
 }
 
 const isCompleteState = (stateName) => (

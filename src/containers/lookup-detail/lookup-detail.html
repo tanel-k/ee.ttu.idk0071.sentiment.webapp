@@ -3,7 +3,7 @@
   <div class="snapshot-report" if.bind="!isLoading" gui-id="lookup-detail-container">
     <div class="row">
       <div class="col-md-12">
-        <h1><em>${lookupData.lookupEntity.name}</em> lookup <small>code: ${lookupData.id}</small></h1>
+        <h1><em>${lookupData.lookupEntity.name}</em> lookup <small>${getUSDate(lookupData.date)} code: ${lookupData.id}</small></h1>
       </div>
     </div>
 

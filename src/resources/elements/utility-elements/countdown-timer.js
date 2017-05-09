@@ -16,29 +16,18 @@ export class CountdownTimer {
   }
 
   attached() {
-    let overTime = this.seconds < 0;
-    let secondsLeft = this.seconds;
-    let secondsOver;
-    if (overTime) {
-      secondsOver = Math.abs(this.seconds);
-      this.descriptor = this.descriptorWhenOverdue;
-    } else {
-      secondsOver = 0;
-      this.descriptor = this.descriptorWhenWaiting;
-    }
-
+    const targetDateMillis = new Date().getTime() + (this.seconds * 1000);
     const timerInterval = setInterval(() => {
-      if (overTime) {
-        secondsOver++;
-        this.displayTime = formatSeconds(secondsOver);
+      const currentMillis = new Date().getTime();
+      const delta = targetDateMillis - currentMillis;
+      const deltaSeconds = Math.ceil(delta / 1000);
+      if (deltaSeconds >= 0) {
+        this.descriptor = this.descriptorWhenWaiting;
       } else {
-        secondsLeft--;
-        this.displayTime = formatSeconds(secondsLeft);
-        if (secondsLeft < 0) {
-          overTime = true;
-          this.descriptor = this.descriptorWhenOverdue;
-        }
+        this.descriptor = this.descriptorWhenOverdue;
       }
+
+      this.displayTime = formatSeconds(Math.abs(deltaSeconds));
     }, 1000);
     this.timerInterval = timerInterval;
   }
