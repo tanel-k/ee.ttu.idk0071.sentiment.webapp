@@ -8,16 +8,6 @@ export class App {
 
   constructor(api) {
     this.api = api;
-    
-    //Hotjar Tracking Code moved from index
-		(function (h, o, t, j, a, r) {
-			h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
-			h._hjSettings = { hjid: 498271, hjsv: 5 };
-			a = o.getElementsByTagName('head')[0];
-			r = o.createElement('script'); r.async = 1;
-			r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-			a.appendChild(r);
-		})(window, document, '//static.hotjar.com/c/hotjar-', '.js?sv=');
   }
 
   configureRouter(config, router) {
@@ -57,6 +47,18 @@ export class App {
     ]);
 
     config.mapUnknownRoutes('containers/general/not-found/not-found');
+  }
+
+  attached() {
+    //Hotjar Tracking Code moved from index
+    ((h, o, t, j, a, r) => {
+      h.hj = h.hj || (() => { (h.hj.q = h.hj.q || []).push(arguments); });
+      h._hjSettings = { hjid: 498271, hjsv: 5 };
+      a = o.getElementsByTagName('head')[0];
+      r = o.createElement('script'); r.async = 1;
+      r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+      a.appendChild(r);
+    })(window, document, '//static.hotjar.com/c/hotjar-', '.js?sv=');
   }
 
   searchForLookup() {
